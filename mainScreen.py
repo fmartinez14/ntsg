@@ -1,162 +1,96 @@
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
 
-from Tkinter import *
-MainScreen = Tk()
-MainScreen.title('NTSG')
+class LabelWindow(Gtk.Window):
 
-#Set height and width of main canvas.
-canvas_height=10000
-canvas_width=10000
-#End height and width
-
-#Main Canvas begin
-w = Canvas(MainScreen)
-w.grid(column=0,row=0)
-#Main Canvas end.
-
-#Start of header
-M = Frame(w)
-M.grid(column=0,row=0)
-#Main header end
-
-ButtonCanvas = Frame(M,bg="red")
-ButtonCanvas.grid(column=1,row=0,sticky="e")
-
-NTSGLabel =Label(M , text= "Network Traffic Based Software Generation" ,  fg="orange")
-NTSGLabel.grid(column=0, row=0)
-
-CreateSession = Button(ButtonCanvas, text='Create Session', command=MainScreen.destroy , fg="blue")
-CreateSession.grid(column=1,row=0)
-
-OpenSession = Button(ButtonCanvas, text='Open Session', command=MainScreen.destroy , fg="blue")
-OpenSession.grid(column=2,row=0)
-
-CloseSession = Button(ButtonCanvas, text='Close Session', command=MainScreen.destroy , fg="blue")
-CloseSession.grid(column=3,row=0)
-
-SwitchWorkspace = Button(ButtonCanvas, text='Switch Workspace', command=MainScreen.destroy , fg="blue")
-SwitchWorkspace.grid(column=4,row=0)
-
-OpenPCAP = Button(ButtonCanvas, text='Open PCAP', command=MainScreen.destroy , fg="blue")
-OpenPCAP.grid(column=5,row=0)
-
-Terminal = Button(ButtonCanvas, text='Terminal', command=MainScreen.destroy , fg="blue")
-Terminal.grid(column=6,row=0)
-
-#End of Header
+    def __init__(self):
+        Gtk.Window.__init__(self, title="Label Example")
 
 
-#Start of Middle Frame
-MiddleFrame = Frame(w)
-MiddleFrame.grid(column=0,row=1)
-#End Of Middle Frame
+        mainGrid = Gtk.Grid()
+        self.add(mainGrid)
 
-#Session View
-SessionView = Frame(MiddleFrame)
-SessionView.grid(column=0,row=1,sticky="w")
+    #Start of Header
+        HeaderBox = Gtk.Box(spacing=1)
+        mainGrid.attach(HeaderBox,0,0,1,1)
 
-SessionLabel =Label(SessionView , text= "Sessions View" ,  fg="orange")
-SessionLabel.grid(column=0,row=0, sticky="w")
-#End of sessions views.
+        label = Gtk.Label("Network Traffic Based Software Generation")
+        HeaderBox.pack_start(label,True,True,0)
 
+        CreateSessionButton = Gtk.Button(label="Create Session")
+        HeaderBox.pack_start(CreateSessionButton,True,True,0)
 
-#Start of PDML View
-PDMLView = Frame(MiddleFrame)
-PDMLView.grid(column=1,row=1)
+        OpenSessionButton = Gtk.Button(label="Open Session")
+        HeaderBox.pack_start(OpenSessionButton,True,True,0)
 
-PDMLLabel =Label(PDMLView , text= "PDML View" ,fg="orange")
-PDMLLabel.grid(column=0,row=0, sticky="e")
+        CloseSessionButton = Gtk.Button(label="Close Session")
+        HeaderBox.pack_start(CloseSessionButton,True,True,0)
 
-#End of PDML View
+        SwitchWorkspaceButton = Gtk.Button(label="Switch Workspace")
+        HeaderBox.pack_start(SwitchWorkspaceButton,True,True,0)
 
+        OpenPCAPButton = Gtk.Button(label= "Open PCAP")
+        HeaderBox.pack_start(OpenPCAPButton,True,True,0)
 
+        OpenTerminalButton = Gtk.Button("Terminal")
+        HeaderBox.pack_start(OpenTerminalButton,True,True,0)
+    #End of Header
 
-#Start of low frame
-LowFrame = Frame(w)
-LowFrame.grid(column=0,row=2)
-#End of low frame
+    #Image Containing the status.
+        StatusIndicator = Gtk.Image.new_from_file ("statusIndicator.png")
+        StatusBox = Gtk.Box(spacing=1)
+        mainGrid.attach(StatusBox,0,1,1,1)
+        StatusBox.pack_start(StatusIndicator,True,True,0)
+    #End of Image containing the Status.
 
-#Start of Tag Area
-TagArea = Frame(LowFrame)
-TagArea.grid(column=0,row=0,sticky="w")
+    #Start of Sessions View
+        SessionsBox = Gtk.Box(spacing=0)
+        mainGrid.attach(SessionsBox,0,2,1,1)
 
+        SessionsViewLabel = Gtk.Label()
+        SessionsViewLabel.set_text("Sessions View")
+        SessionsBox.pack_start(SessionsViewLabel,False,False,0)
+    #End of Sessions View
 
+    #Start of PDML View
+        PDMLBox = Gtk.Box(spacing=0)
+        mainGrid.attach(PDMLBox,1,2,1,1)
 
-TagLabel =Label(TagArea , text= "Tag Area" , fg="orange")
-TagLabel.grid(column=0,row=0)
+        PDMLLabel = Gtk.Label("PDML View")
+        PDMLLabel.set_text("PDML View")
+        PDMLBox.pack_start(PDMLLabel,False,False,0)
+    #End of PDML View
 
-e1 = Entry(TagArea)
-e2 = Entry(TagArea)
-e3= Entry(TagArea)
-e4= Entry(TagArea)
+    #Start of Tagging View
+        TagBox = Gtk.Box(spacing=2)
+        mainGrid.attach(TagBox,0,3,1,1)
 
-TagLabel =Label(TagArea , text= "Saved Tag" , fg="orange")
-TagLabel.grid(row=1, sticky="w")
+        TagLabel = Gtk.Label("Tag Label")
+        TagLabel.set_text("Tag Label")
+        TagBox.pack_start(TagLabel,False,False,0)
+    #End of Tagging View
 
-TagLabel =Label(TagArea , text= "Tag Name" , fg="orange")
-TagLabel.grid(row=2,sticky="w")
+    #Start of field area View
+        FieldAreaBox = Gtk.Box(spacing=2)
+        mainGrid.attach(FieldAreaBox,1,3,1,1)
 
-TagLabel =Label(TagArea , text= "Tag Field" , fg="orange")
-TagLabel.grid(row=3,sticky="w")
+        FieldAreaLabel = Gtk.Label("Field Area")
+        FieldAreaLabel.set_text("Field Area")
+        FieldAreaBox.pack_start(FieldAreaLabel,False,True,10)
+    #End of Field area views.
 
-TagLabel =Label(TagArea , text= "Tag Description" , fg="orange")
-TagLabel.grid(row=4,sticky="w")
+    #Start of Message Type View
+        MessageTypeBox = Gtk.Box(spacing=2)
+        mainGrid.attach(MessageTypeBox,2,3,1,1)
 
-e1.grid(row=1, column=2)
-e2.grid(row=2, column=2)
-e3.grid(row=3, column=2)
-e4.grid(row=4, column=2)
-
-UpdateLabel = Button(TagArea, text='Update', command=MainScreen.destroy , fg="blue")
-UpdateLabel.grid(column=1,row=5,sticky="e")
-
-CancelLabel = Button(TagArea, text='Cancel', command=MainScreen.destroy , fg="blue")
-CancelLabel.grid(column=2,row=5,sticky="w")
-#End of Tag Area
-
-
-#Start of Field Area
-FieldArea = Frame(LowFrame)
-FieldArea.grid(column=2,row=0)
-
-FieldLabel =Label(TagArea , text= "Field Area"  , fg="orange")
-FieldLabel.grid(column=1,row=0)
-#End of Field Area
-
-
-#Start of Message Type area
-MessageArea = Frame(LowFrame)
-MessageArea.grid(column=3,row=0)
-
-
-MessageLabel =Label(MessageArea , text= "Message Type Area" ,  fg="orange")
-MessageLabel.grid(column=2,row=0)
-
-NewMessageLabel = Button(MessageArea, text='New/Modify', command=MainScreen.destroy , fg="blue")
-NewMessageLabel.grid(column=1,row=1)
-
-NewDependency = Button(MessageArea, text='New Dependency', command=MainScreen.destroy , fg="blue")
-NewDependency.grid(column=2,row=1)
-
-NewTemplate = Button(MessageArea, text='Template', command=MainScreen.destroy , fg="blue")
-NewTemplate.grid(column=3,row=1,sticky="w")
-
-NewEquivalency = Button(MessageArea, text='Equivalency', command=MainScreen.destroy , fg="blue")
-NewEquivalency.grid(column=4,row=1,sticky="w")
-
-NewGeneration = Button(MessageArea, text='Generation', command=MainScreen.destroy , fg="blue")
-NewGeneration.grid(column=5,row=1,sticky="w")
-#
-# InstructionsLabel =Label(MessageArea , text= "To create a new Message Type, " ,  fg="orange",width=20)
-# InstructionsLabel.grid(column=2,row=2)
-#
-# InstructionsLabel3 =Label(MessageArea , text="please enter a message type name and select message type field value pair(s).", fg="orange")
-# InstructionsLabel3.grid(column=2,row=3)
-#
-# InstructionsLabel2= Label(MessageArea , text="To update/delete to an existing message type, please select from the existing message type first and the previosuly selected name and field pair(s) will be pre pouplated." ,fg= "orange",width=20)
-# InstructionsLabel2.grid(column=2,row=4,sticky="e")
-
-#end of Message Type area
+        MessageTypeArea = Gtk.Label("Message Type Area")
+        MessageTypeArea.set_text("Message Type")
+        MessageTypeBox.pack_start(MessageTypeArea,False,True,0)
+    #End of Message Type View
 
 
-
-mainloop()
+window = LabelWindow()
+window.connect("destroy", Gtk.main_quit)
+window.show_all()
+Gtk.main()
