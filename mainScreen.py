@@ -136,16 +136,54 @@ class LabelWindow(Gtk.Window):
     #End of Tagging View
 
     #Start of field area View
-        FieldAreaBox = Gtk.Box(spacing=1)
+        FieldAreaBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL,spacing=1)
         mainGrid.attach(FieldAreaBox,1,3,1,1)
 
         FieldAreaFrame= Gtk.Frame()
         FieldAreaBox.add(FieldAreaFrame)
 
+        TableBox = Gtk.Box(spacing=0)
+        FieldAreaTable = Gtk.ListStore(str,str,int,int,str,str,int)
+
+
+        FieldAreaTable.append(["icmp.type","Type 8 [Echo ping request]" , 1, 34, "8", "8", 2])
+        FieldAreaTable.append(["icmp.code","Code 0" , 1, 35, "00", "0", 2])
+        FieldAreaTable.append(["icmp.checksum","Checksum: 0x6861 [Correct]" , 0, 36, "0x6861", "6861", 0])
+        FieldAreaTable.append(["icmp.Ident","Identifier: 0x809e" , 2, 38, "0x809e", "809e", 2])
+        FieldAreaTable.append(["icmp.seq","Sequence number: 0x0f00" , 2, 40, "0x0f00", "0f00", 2])
+
+        Render_Name = Gtk.CellRendererText()
+        Render_Showname= Gtk.CellRendererText()
+        Render_Size= Gtk.CellRendererText()
+        Render_Position= Gtk.CellRendererText()
+        Render_Show = Gtk.CellRendererText()
+        Render_Value = Gtk.CellRendererText()
+        Render_Entropy = Gtk.CellRendererText()
+
+        TableView = Gtk.TreeView(FieldAreaTable)
+
+        FirstColumn = Gtk.TreeViewColumn("Field Name",Render_Name,text=0)
+        SecondColumn = Gtk.TreeViewColumn("Show Name",Render_Showname,text=1)
+        ThirdColumn = Gtk.TreeViewColumn("Size",Render_Size,text=2)
+        FourthColumn = Gtk.TreeViewColumn("Position",Render_Position,text=3)
+        FifthColumn = Gtk.TreeViewColumn("Show",Render_Show,text=4)
+        SixthColumn = Gtk.TreeViewColumn("Value",Render_Value,text=5)
+        SeventhColumn = Gtk.TreeViewColumn("Entropy",Render_Entropy,text=6)
+
+        TableView.append_column(FirstColumn)
+        TableView.append_column(SecondColumn)
+        TableView.append_column(ThirdColumn)
+        TableView.append_column(FourthColumn)
+        TableView.append_column(FifthColumn)
+        TableView.append_column(SixthColumn)
+        TableView.append_column(SeventhColumn)
+        TableBox.pack_start(TableView,False,False,0)
 
         FieldAreaLabel = Gtk.Label("Field Area")
         FieldAreaLabel.set_text("Field Area")
-        FieldAreaBox.pack_start(FieldAreaLabel,False,True,0)
+        FieldAreaBox.pack_start(FieldAreaLabel,False,False,0)
+
+        FieldAreaBox.pack_start(TableBox,False,False,0)
     #End of Field area views.
 
     #Start of Message Type View
