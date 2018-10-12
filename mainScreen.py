@@ -64,7 +64,7 @@ class LabelWindow(Gtk.Window):
     #Start of PDML View
         PDMLFrame = Gtk.Frame()
         PDMLBox = Gtk.Box(spacing=0)
-        mainGrid.attach(PDMLBox,1,2,1,1)
+        mainGrid.attach(PDMLBox,1,2,2,1)
         PDMLBox.add(PDMLFrame)
         PDMLLabel = Gtk.Label("PDML View")
         PDMLLabel.set_text("PDML View")
@@ -84,16 +84,55 @@ class LabelWindow(Gtk.Window):
         TagLabel.set_text("Tag Area")
         TagBox.pack_start(TagLabel,False,False,0)
 
-        SavedBox = Gtk.Box(spacing=0)
 
+        #First text box of Tag area.
+        SavedBox = Gtk.Box(spacing=3)
         SavedTag= Gtk.Label("Saved Tag")
         SavedTag.set_text("Saved Tag")
-        SavedBox.pack_start(SavedTag,True,False,0)
-
+        SavedBox.pack_start(SavedTag,False,False,0)
         SavedTagArea = Gtk.Entry()
         SavedBox.pack_start(SavedTagArea,False,False,0)
-
         TagBox.pack_start(SavedBox,False,False,0)
+        #End of first text box
+
+        #Start of Second Text Box
+        TagNameBox = Gtk.Box(spacing=3)
+        TagNameLabel = Gtk.Label("Tag Name")
+        TagNameLabel.set_text("Tag Name")
+        TagNameBox.pack_start(TagNameLabel,False,False,0)
+        TagNameInput = Gtk.Entry()
+        TagNameBox.pack_start(TagNameInput,False,False,0)
+        TagBox.pack_start(TagNameBox,False,False,0)
+        #End of second text box
+
+        #Start of Third Text Box
+        TaggedFieldBox = Gtk.Box(spacing=3)
+        TaggedFieldLabel = Gtk.Label("Tagged Field")
+        TaggedFieldLabel.set_text("Tagged Field")
+        TaggedFieldBox.pack_start(TaggedFieldLabel,False,False,0)
+        TaggedFieldInput = Gtk.Entry()
+        TaggedFieldBox.pack_start(TaggedFieldInput,False,False,0)
+        TagBox.pack_start(TaggedFieldBox,False,False,0)
+        #End of Third Text Box
+
+        #Start of fourth and final box.
+        TagDescriptionBox= Gtk.Box(spacing=3)
+        TagDescriptionLabel= Gtk.Label("Tag Description")
+        TagDescriptionLabel.set_text("Tag Description")
+        TagDescriptionBox.pack_start(TagDescriptionLabel,False,False,0)
+        TagDescriptionInput = Gtk.Entry()
+        TagDescriptionBox.pack_start(TagDescriptionInput,False,False,0)
+        TagBox.pack_start(TagDescriptionBox,False,False,0)
+        #End of fourth box.
+
+        #Buttons to submit or cancel.
+        SubmitCancelBox = Gtk.Box(spacing=10)
+        SubmitTagButton = Gtk.Button(label="Update")
+        CancelTagButton = Gtk.Button(label="Cancel")
+        SubmitCancelBox.pack_start(SubmitTagButton,False,False,0)
+        SubmitCancelBox.pack_start(CancelTagButton,False,False,0)
+        TagBox.pack_start(SubmitCancelBox,False,False,0)
+        #End of Buttons to submit or cancel.
     #End of Tagging View
 
     #Start of field area View
