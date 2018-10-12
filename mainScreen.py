@@ -7,7 +7,6 @@ class LabelWindow(Gtk.Window):
     def __init__(self):
         Gtk.Window.__init__(self, title="Network Traffic Based Software Generation")
 
-
         mainGrid = Gtk.Grid()
         self.add(mainGrid)
 
@@ -50,15 +49,16 @@ class LabelWindow(Gtk.Window):
     #End of Image containing the Status.
 
     #Start of Sessions View
-        SessionsBox = Gtk.Box(spacing=10)
+        SessionsBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL,spacing=10)
         mainGrid.attach(SessionsBox,0,2,1,1)
-
+        PlaceHolderSession = Gtk.Image.new_from_file ("placeholder.png")
         SessionsFrame = Gtk.Frame()
         SessionsBox.add(SessionsFrame)
 
         SessionsViewLabel = Gtk.Label()
         SessionsViewLabel.set_text("Sessions View")
-        SessionsBox.pack_start(SessionsViewLabel,False,False,0)
+        # SessionsBox.pack_start(SessionsViewLabel,False,False,0)
+        SessionsBox.pack_start(PlaceHolderSession,False,False,0)
     #End of Sessions View
 
     #Start of PDML View
@@ -138,29 +138,34 @@ class LabelWindow(Gtk.Window):
     #Start of field area View
         FieldAreaBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL,spacing=1)
         mainGrid.attach(FieldAreaBox,1,3,1,1)
+        self.FieldAreaTable = Gtk.ListStore(str,str,int,int,str,str,int)
+
 
         FieldAreaFrame= Gtk.Frame()
         FieldAreaBox.add(FieldAreaFrame)
 
         TableBox = Gtk.Box(spacing=0)
-        FieldAreaTable = Gtk.ListStore(str,str,int,int,str,str,int)
 
 
-        FieldAreaTable.append(["icmp.type","Type 8 [Echo ping request]" , 1, 34, "8", "8", 2])
-        FieldAreaTable.append(["icmp.code","Code 0" , 1, 35, "00", "0", 2])
-        FieldAreaTable.append(["icmp.checksum","Checksum: 0x6861 [Correct]" , 0, 36, "0x6861", "6861", 0])
-        FieldAreaTable.append(["icmp.Ident","Identifier: 0x809e" , 2, 38, "0x809e", "809e", 2])
-        FieldAreaTable.append(["icmp.seq","Sequence number: 0x0f00" , 2, 40, "0x0f00", "0f00", 2])
+        self.FieldAreaTable.append(["icmp.type","Type 8 [Echo ping request]" , 1, 34, "8", "8", 2])
+        self.FieldAreaTable.append(["icmp.code","Code 0" , 1, 35, "00", "0", 2])
+        self.FieldAreaTable.append(["icmp.checksum","Checksum: 0x6861 [Correct]" , 0, 36, "0x6861", "6861", 0])
+        self.FieldAreaTable.append(["icmp.Ident","Identifier: 0x809e" , 2, 38, "0x809e", "809e", 2])
+        self.FieldAreaTable.append(["icmp.seq","Sequence number: 0x0f00" , 2, 40, "0x0f00", "0f00", 2])
 
         Render_Name = Gtk.CellRendererText()
+        Render_Name.set_property("editable",True)
         Render_Showname= Gtk.CellRendererText()
+        Render_Showname.set_property("editable",True)
         Render_Size= Gtk.CellRendererText()
+        Render_Size.set_property("editable",True)
         Render_Position= Gtk.CellRendererText()
         Render_Show = Gtk.CellRendererText()
         Render_Value = Gtk.CellRendererText()
+        Render_Value.set_property("editable",True)
         Render_Entropy = Gtk.CellRendererText()
 
-        TableView = Gtk.TreeView(FieldAreaTable)
+        TableView = Gtk.TreeView(self.FieldAreaTable)
 
         FirstColumn = Gtk.TreeViewColumn("Field Name",Render_Name,text=0)
         SecondColumn = Gtk.TreeViewColumn("Show Name",Render_Showname,text=1)
@@ -177,13 +182,24 @@ class LabelWindow(Gtk.Window):
         TableView.append_column(FifthColumn)
         TableView.append_column(SixthColumn)
         TableView.append_column(SeventhColumn)
+
+        Render_Name.connect("edited",self.name_edited)
+        Render_Showname.connect("edited",self.showName_edited)
+        Render_Size.connect("edited",self.size_edited)
+        Render_Value.connect("edited",self.value_edited)
+
         TableBox.pack_start(TableView,False,False,0)
 
         FieldAreaLabel = Gtk.Label("Field Area")
         FieldAreaLabel.set_text("Field Area")
         FieldAreaBox.pack_start(FieldAreaLabel,False,False,0)
-
+        FieldBottomBox = Gtk.Box(spacing=10)
+        SelectFieldBox = Gtk.CheckButton(label="Select all fields")
+        EditFields = Gtk.Label("Field Name, Showname , Value and Length are editable fields.")
+        FieldBottomBox.pack_start(SelectFieldBox,False,False,0)
+        FieldBottomBox.pack_start(EditFields,False,False,0)
         FieldAreaBox.pack_start(TableBox,False,False,0)
+        FieldAreaBox.pack_start(FieldBottomBox,False,False,0)
     #End of Field area views.
 
     #Start of Message Type View
@@ -197,6 +213,15 @@ class LabelWindow(Gtk.Window):
         MessageTypeArea.set_text("Message Type")
         MessageTypeBox.pack_start(MessageTypeArea,False,True,0)
     #End of Message Type View
+
+    def name_edited(self, widget, path, text):
+        self.FieldAreaTable[path][0] = text
+    def showName_edited(self, widget, path, text):
+        self.FieldAreaTable[path][1] = text
+    def size_edited(self, widget, path, text):
+        self.FieldAreaTable[path][2] = int(text)
+    def value_edited(self, widget, path, text):
+        self.FieldAreaTable[path][5] = text
 
 
 window = LabelWindow()
