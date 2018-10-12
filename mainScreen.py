@@ -5,7 +5,7 @@ from gi.repository import Gtk
 class LabelWindow(Gtk.Window):
 
     def __init__(self):
-        Gtk.Window.__init__(self, title="Label Example")
+        Gtk.Window.__init__(self, title="Network Traffic Based Software Generation")
 
 
         mainGrid = Gtk.Grid()
@@ -13,7 +13,10 @@ class LabelWindow(Gtk.Window):
 
     #Start of Header
         HeaderBox = Gtk.Box(spacing=1)
-        mainGrid.attach(HeaderBox,0,0,1,1)
+        mainGrid.attach(HeaderBox,0,0,3,1)
+
+        HeaderFrame = Gtk.Frame()
+        HeaderBox.add(HeaderFrame)
 
         label = Gtk.Label("Network Traffic Based Software Generation")
         HeaderBox.pack_start(label,True,True,0)
@@ -39,14 +42,19 @@ class LabelWindow(Gtk.Window):
 
     #Image Containing the status.
         StatusIndicator = Gtk.Image.new_from_file ("statusIndicator.png")
-        StatusBox = Gtk.Box(spacing=1)
-        mainGrid.attach(StatusBox,0,1,1,1)
-        StatusBox.pack_start(StatusIndicator,True,True,0)
+        StatusFrame = Gtk.Frame()
+        StatusBox = Gtk.Box(spacing=0)
+        StatusBox.add(StatusFrame)
+        mainGrid.attach(StatusBox,0,1,3,1)
+        StatusBox.pack_start(StatusIndicator,False,True,0)
     #End of Image containing the Status.
 
     #Start of Sessions View
-        SessionsBox = Gtk.Box(spacing=0)
+        SessionsBox = Gtk.Box(spacing=10)
         mainGrid.attach(SessionsBox,0,2,1,1)
+
+        SessionsFrame = Gtk.Frame()
+        SessionsBox.add(SessionsFrame)
 
         SessionsViewLabel = Gtk.Label()
         SessionsViewLabel.set_text("Sessions View")
@@ -54,35 +62,59 @@ class LabelWindow(Gtk.Window):
     #End of Sessions View
 
     #Start of PDML View
+        PDMLFrame = Gtk.Frame()
         PDMLBox = Gtk.Box(spacing=0)
         mainGrid.attach(PDMLBox,1,2,1,1)
-
+        PDMLBox.add(PDMLFrame)
         PDMLLabel = Gtk.Label("PDML View")
         PDMLLabel.set_text("PDML View")
         PDMLBox.pack_start(PDMLLabel,False,False,0)
+
+
     #End of PDML View
 
     #Start of Tagging View
-        TagBox = Gtk.Box(spacing=2)
+        TagBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL,spacing=0)
         mainGrid.attach(TagBox,0,3,1,1)
 
-        TagLabel = Gtk.Label("Tag Label")
-        TagLabel.set_text("Tag Label")
+        TagFrame= Gtk.Frame()
+        TagBox.add(TagFrame)
+
+        TagLabel = Gtk.Label("Tag Area")
+        TagLabel.set_text("Tag Area")
         TagBox.pack_start(TagLabel,False,False,0)
+
+        SavedBox = Gtk.Box(spacing=0)
+
+        SavedTag= Gtk.Label("Saved Tag")
+        SavedTag.set_text("Saved Tag")
+        SavedBox.pack_start(SavedTag,True,False,0)
+
+        SavedTagArea = Gtk.Entry()
+        SavedBox.pack_start(SavedTagArea,False,False,0)
+
+        TagBox.pack_start(SavedBox,False,False,0)
     #End of Tagging View
 
     #Start of field area View
-        FieldAreaBox = Gtk.Box(spacing=2)
+        FieldAreaBox = Gtk.Box(spacing=1)
         mainGrid.attach(FieldAreaBox,1,3,1,1)
+
+        FieldAreaFrame= Gtk.Frame()
+        FieldAreaBox.add(FieldAreaFrame)
+
 
         FieldAreaLabel = Gtk.Label("Field Area")
         FieldAreaLabel.set_text("Field Area")
-        FieldAreaBox.pack_start(FieldAreaLabel,False,True,10)
+        FieldAreaBox.pack_start(FieldAreaLabel,False,True,0)
     #End of Field area views.
 
     #Start of Message Type View
-        MessageTypeBox = Gtk.Box(spacing=2)
+        MessageTypeBox = Gtk.Box(spacing=1)
         mainGrid.attach(MessageTypeBox,2,3,1,1)
+
+        MessageTypeFrame = Gtk.Frame()
+        MessageTypeBox.add(MessageTypeFrame)
 
         MessageTypeArea = Gtk.Label("Message Type Area")
         MessageTypeArea.set_text("Message Type")
