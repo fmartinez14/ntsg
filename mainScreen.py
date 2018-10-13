@@ -230,17 +230,62 @@ class LabelWindow(Gtk.Window):
     #End of Field area views.
 
     #Start of Message Type View
-        MessageTypeBox = Gtk.Box(spacing=1)
+        MessageTypeBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL,spacing=0)
         mainGrid.attach(MessageTypeBox,2,3,1,1)
 
         MessageTypeFrame = Gtk.Frame()
         MessageTypeBox.add(MessageTypeFrame)
 
         MessageTypeTabs = Gtk.Notebook()
+        NewModifyView = Gtk.Box(orientation=Gtk.Orientation.VERTICAL,spacing=0)
+        InstructionsLabel= Gtk.Label("To create a new message type, please enter a message type name and select message type field value pair(s). To Update/delete an existing \n message type, please select from the existing message type first and the previously selected name and field value pair(s) will be pre-populated.")
+
+        ExistingMessageTypeBox = Gtk.Box(spacing=1)
+        ExistingMessageLabel = Gtk.Label("Existing Message Type")
+        ExistingMessageTypeBox.pack_start(ExistingMessageLabel,False,False,0)
+        ExistingMessageType = Gtk.Entry()
+        ExistingMessageTypeBox.pack_start(ExistingMessageType,False,False,0)
+
+        MessageTypeNameBox= Gtk.Box(spacing=2)
+        MessageTypeLabel = Gtk.Label("Message Type Name")
+        MessageTypeNameBox.pack_start(MessageTypeLabel, False,False,0)
+        MessageTypeName= Gtk.Entry()
+        MessageTypeNameBox.pack_start(MessageTypeName,False,False,0)
+
+        MessageTypePairsBox = Gtk.Box(spacing=2)
+        MessageTypePairsLabel = Gtk.Label("Message Type Field\n Value Pair(s)")
+        MessageTypePairsBox.pack_start(MessageTypePairsLabel,False,False,0)
+        ValuePairs = Gtk.Entry()
+        MessageTypePairsBox.pack_start(ValuePairs,False,False,0)
+
+        NewModifyView.pack_start(InstructionsLabel,False,False,0)
+        NewModifyView.pack_start(ExistingMessageTypeBox,False,False,0)
+        NewModifyView.pack_start(MessageTypeNameBox,False,False,0)
+        NewModifyView.pack_start(MessageTypePairsBox,False,False,0)
+
+        SelectBothField = Gtk.CheckButton(label="Select both field name and value")
+        SelectFieldNameOnly = Gtk.CheckButton(label="Select field name only")
+
+        NewModifyView.pack_start(SelectBothField,False,False,0)
+        NewModifyView.pack_start(SelectFieldNameOnly,False,False,0)
+
+        OperationButtons = Gtk.Box(spacing=2)
+        SaveButtonMessageType = Gtk.Button(label="Save")
+        DeleteButtonMessageType= Gtk.Button(label="Delete")
+        ClearButtonMessageType= Gtk.Button(label="Clear")
+        OperationButtons.pack_start(SaveButtonMessageType,False,False,0)
+        OperationButtons.pack_start(DeleteButtonMessageType,False,False,0)
+        OperationButtons.pack_start(ClearButtonMessageType,False,False,0)
+
+        NewModifyView.pack_start(OperationButtons,False,False,0)
+
+        MessageTypeTabs.append_page(NewModifyView)
+        MessageTypeTabs.set_tab_label_text(NewModifyView,"New/Modify")
 
         MessageTypeArea = Gtk.Label("Message Type Area")
         MessageTypeArea.set_text("Message Type")
-        MessageTypeBox.pack_start(MessageTypeArea,False,True,0)
+        MessageTypeBox.pack_start(MessageTypeArea,False,False,0)
+        MessageTypeBox.pack_start(MessageTypeTabs,False,False,0)
     #End of Message Type View
 
     def name_edited(self, widget, path, text):
