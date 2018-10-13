@@ -12,7 +12,7 @@ class LabelWindow(Gtk.Window):
 
     #Start of Header
         HeaderBox = Gtk.Box(spacing=1)
-        mainGrid.attach(HeaderBox,0,0,3,1)
+        mainGrid.attach(HeaderBox,0,0,4,1)
 
         HeaderFrame = Gtk.Frame()
         HeaderBox.add(HeaderFrame)
@@ -44,7 +44,7 @@ class LabelWindow(Gtk.Window):
         StatusFrame = Gtk.Frame()
         StatusBox = Gtk.Box(spacing=0)
         StatusBox.add(StatusFrame)
-        mainGrid.attach(StatusBox,0,1,3,1)
+        mainGrid.attach(StatusBox,0,1,4,1)
         StatusBox.pack_start(StatusIndicator,False,True,0)
     #End of Image containing the Status.
 
@@ -231,7 +231,7 @@ class LabelWindow(Gtk.Window):
 
     #Start of Message Type View
         MessageTypeBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL,spacing=0)
-        mainGrid.attach(MessageTypeBox,2,3,1,1)
+        mainGrid.attach(MessageTypeBox,2,3,2,1)
 
         MessageTypeFrame = Gtk.Frame()
         MessageTypeBox.add(MessageTypeFrame)
@@ -243,7 +243,8 @@ class LabelWindow(Gtk.Window):
         #Start of New/Modify
         MessageTypeTabs = Gtk.Notebook()
         NewModifyView = Gtk.Box(orientation=Gtk.Orientation.VERTICAL,spacing=0)
-        InstructionsLabel= Gtk.Label("To create a new message type, please enter a message type name and select message type field value pair(s). To Update/delete an existing \n message type, please select from the existing message type first and the previously selected name and field value pair(s) will be pre-populated.")
+        InstructionsLabel= Gtk.Label("To create a new message type, please enter a message type name and select message type field value pair(s). \n To Update/delete an existing message type, please select from the existing message type first \n and the previously selected name and field value pair(s) will be pre-populated.")
+        InstructionsLabel.set_line_wrap(True)
 
         ExistingMessageTypeBox = Gtk.Box(spacing=1)
         ExistingMessageLabel = Gtk.Label("Existing Message Type")
@@ -288,6 +289,47 @@ class LabelWindow(Gtk.Window):
         MessageTypeTabs.set_tab_label_text(NewModifyView,"New/Modify")
 
         #End of New/Modify
+        #Start of Equivalency
+        EquivalencyBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL,spacing=0)
+        FieldEquivalencyEqualBox = Gtk.Box(spacing=0)
+
+        FieldEquivalencyLabel = Gtk.Label("Field Equivalency")
+        FieldName = Gtk.Entry()
+        FieldOR = Gtk.Label("OR")
+        MessageType = Gtk.Entry()
+        FieldEqual = Gtk.Label("=")
+        FieldEquivalencyEqualBox.pack_start(FieldEquivalencyLabel,False,False,0)
+        FieldEquivalencyEqualBox.pack_start(FieldName,False,False,0)
+        FieldEquivalencyEqualBox.pack_start(FieldOR,False,False,0)
+        FieldEquivalencyEqualBox.pack_start(MessageType,False,False,0)
+        FieldEquivalencyEqualBox.pack_start(FieldEqual,False,False,0)
+        EquivalencyBox.pack_start(FieldEquivalencyEqualBox,False,False,0)
+
+        SecondFieldEquivalencyEqualBox= Gtk.Box(spacing=0)
+        FieldName = Gtk.Entry()
+        FieldOR = Gtk.Label("OR")
+        IndentLabel = Gtk.Label("                           ")
+        MessageType = Gtk.Entry()
+        SecondFieldEquivalencyEqualBox.pack_start(IndentLabel,False,False,0)
+        SecondFieldEquivalencyEqualBox.pack_start(FieldName,False,False,0)
+        SecondFieldEquivalencyEqualBox.pack_start(FieldOR,False,False,0)
+        SecondFieldEquivalencyEqualBox.pack_start(MessageType,False,False,0)
+        FieldPLUS= Gtk.Label("+")
+        SecondFieldEquivalencyEqualBox.pack_start(FieldPLUS,False,False,0)
+        EquivalencyBox.pack_start(SecondFieldEquivalencyEqualBox,False,False,0)
+
+        OperationButtonsEquivalency = Gtk.Box(spacing=2)
+        SaveButtonEquivalency = Gtk.Button(label="Save")
+        ClearButtonEquivalency= Gtk.Button(label="Clear")
+        OperationButtonsEquivalency.pack_start(SaveButtonEquivalency,False,False,0)
+        OperationButtonsEquivalency.pack_start(ClearButtonEquivalency,False,False,0)
+
+        EquivalencyBox.pack_start(OperationButtonsEquivalency,False,False,0)
+
+        MessageTypeTabs.append_page(EquivalencyBox)
+        MessageTypeTabs.set_tab_label_text(EquivalencyBox,"Equivalency")
+
+        #End of Equivalency
 
         #Start of Generation
         GenerationBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL,spacing=0)
