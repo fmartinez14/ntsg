@@ -50,15 +50,42 @@ class LabelWindow(Gtk.Window):
 
     #Start of Sessions View
         SessionsBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL,spacing=10)
+        FolderImage = Gtk.Image.new_from_file ("folder.png")
+
         mainGrid.attach(SessionsBox,0,2,1,1)
-        PlaceHolderSession = Gtk.Image.new_from_file ("placeholder.png")
+        WorkspaceBox = Gtk.Box()
+
+        # WorkspaceBox.pack_start(FolderImage,False,False,0)
+        Workspace = Gtk.Label("Workspace Kobra")
+        WorkspaceBox.pack_start(Workspace,False,False,0)
+
+        SessionA = Gtk.Box(spacing=0)
+        SessionA.pack_start(FolderImage,False,False,0)
+        SessionALabel = Gtk.Label("Session A \n -State1 \n  -State 2")
+        SessionA.pack_start(SessionALabel,False,False,0)
+
+        FolderImage = Gtk.Image.new_from_file ("folder.png")
+        SessionB = Gtk.Box(spacing=0)
+        SessionB.pack_start(FolderImage,False,False,0)
+        SessionBLabel = Gtk.Label("Session B")
+        SessionB.pack_start(SessionBLabel,False,False,0)
+
+        FolderImage = Gtk.Image.new_from_file ("folder.png")
+        SessionC = Gtk.Box(spacing=0)
+        SessionC.pack_start(FolderImage,False,False,0)
+        SessionCLabel = Gtk.Label("Session C")
+        SessionC.pack_start(SessionCLabel,False,False,0)
+
         SessionsFrame = Gtk.Frame()
         SessionsBox.add(SessionsFrame)
 
         SessionsViewLabel = Gtk.Label()
-        SessionsViewLabel.set_text("Sessions View")
-        # SessionsBox.pack_start(SessionsViewLabel,False,False,0)
-        SessionsBox.pack_start(PlaceHolderSession,False,False,0)
+        SessionsViewLabel.set_text("Session View")
+        SessionsBox.pack_start(SessionsViewLabel,False,False,0)
+        SessionsBox.pack_start(WorkspaceBox,False,False,0)
+        SessionsBox.pack_start(SessionA,False,False,0)
+        SessionsBox.pack_start(SessionB,False,False,0)
+        SessionsBox.pack_start(SessionC,False,False,0)
     #End of Sessions View
 
     #Start of PDML View
