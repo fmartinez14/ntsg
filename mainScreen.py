@@ -236,6 +236,8 @@ class LabelWindow(Gtk.Window):
         MessageTypeFrame = Gtk.Frame()
         MessageTypeBox.add(MessageTypeFrame)
 
+        MessageTypeTabs = Gtk.Notebook()
+
         MessageTypeArea = Gtk.Label("Message Type Area")
         MessageTypeArea.set_text("Message Type")
         MessageTypeBox.pack_start(MessageTypeArea,False,True,0)
