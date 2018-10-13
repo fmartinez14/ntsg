@@ -235,7 +235,12 @@ class LabelWindow(Gtk.Window):
 
         MessageTypeFrame = Gtk.Frame()
         MessageTypeBox.add(MessageTypeFrame)
-
+        #
+        #
+        #
+        #IMPORTANT: Notebook requires all views to be inside a box. This section is all the views until I find a way to have it set up more efficiently.
+        #
+        #Start of New/Modify
         MessageTypeTabs = Gtk.Notebook()
         NewModifyView = Gtk.Box(orientation=Gtk.Orientation.VERTICAL,spacing=0)
         InstructionsLabel= Gtk.Label("To create a new message type, please enter a message type name and select message type field value pair(s). To Update/delete an existing \n message type, please select from the existing message type first and the previously selected name and field value pair(s) will be pre-populated.")
@@ -282,8 +287,46 @@ class LabelWindow(Gtk.Window):
         MessageTypeTabs.append_page(NewModifyView)
         MessageTypeTabs.set_tab_label_text(NewModifyView,"New/Modify")
 
+        #End of New/Modify
+
+        #Start of Generation
+        GenerationBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL,spacing=0)
+        ExistingMessageTypeInGeneration = Gtk.Box(spacing=0)
+        ExistingMessageTypeLabel = Gtk.Label("Existing Message Type")
+        ExistingMessageTypeInGeneration.pack_start(ExistingMessageTypeLabel,False,False,0)
+        MessageTypeName= Gtk.Entry()
+        ExistingMessageTypeInGeneration.pack_start(MessageTypeName,False,False,0)
+
+        GenerationBox.pack_start(ExistingMessageTypeInGeneration,False,False,0)
+
+        MessageTemplateFormatBox = Gtk.Box(spacing=0)
+        MessageTemplateFormatLabel = Gtk.Label("Message Template \n Output Format")
+        MessageTemplateFormat = Gtk.Entry()
+        MessageTemplateFormatBox.pack_start(MessageTemplateFormatLabel,False,False,0)
+        MessageTemplateFormatBox.pack_start(MessageTemplateFormat,False,False,0)
+        GenerationBox.pack_start(MessageTemplateFormatBox,False,False,0)
+
+        MessageTemplateNameBox = Gtk.Box(spacing=0)
+        MessageTemplateNameLabel= Gtk.Label("Message Template \n Name")
+        MessageTemplateName = Gtk.Entry()
+        MessageTemplateNameBox.pack_start(MessageTemplateNameLabel,False,False,0)
+        MessageTemplateNameBox.pack_start(MessageTemplateName,False,False,0)
+        GenerationBox.pack_start(MessageTemplateNameBox,False,False,0)
+
+        ButtonsMessageType = Gtk.Box(spacing=0)
+        GenerateButton = Gtk.Button(label="Generate")
+        ClearMessageType = Gtk.Button(label="Clear")
+        ButtonsMessageType.pack_start(GenerateButton,False,False,0)
+        ButtonsMessageType.pack_start(ClearMessageType,False,False,0)
+        GenerationBox.pack_start(ButtonsMessageType,False,False,0)
+
+        MessageTypeTabs.append_page(GenerationBox)
+        MessageTypeTabs.set_tab_label_text(GenerationBox,"Generation")
+        #End of Generation
+
         MessageTypeArea = Gtk.Label("Message Type Area")
         MessageTypeArea.set_text("Message Type")
+
         MessageTypeBox.pack_start(MessageTypeArea,False,False,0)
         MessageTypeBox.pack_start(MessageTypeTabs,False,False,0)
     #End of Message Type View
