@@ -289,6 +289,48 @@ class LabelWindow(Gtk.Window):
         MessageTypeTabs.set_tab_label_text(NewModifyView,"New/Modify")
 
         #End of New/Modify
+        #Start of Template
+        TemplateBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL,spacing=0)
+
+        ExistingMessageTypebox = Gtk.Box(spacing=0)
+        ExistingMessageTypeLabel = Gtk.Label("Existing Message Type")
+        ExistingMessageType = Gtk.Entry()
+        ExistingMessageTypebox.pack_start(ExistingMessageTypeLabel,False,False,0)
+        ExistingMessageTypebox.pack_start(ExistingMessageType,False,False,0)
+        TemplateBox.pack_start(ExistingMessageTypebox,False,False,0)
+
+
+        CycleThroughPackets = Gtk.Button(label="Cycle Through Packets")
+        TemplateBox.pack_start(CycleThroughPackets,False,False,0)
+
+        MessageTypeTemplateBox = Gtk.Box(spacing=0)
+        MessageTypeTemplateLabel = Gtk.Label("Message Type \n Template Field Value \n Pair(s)")
+        PacketArea = Gtk.ListStore(str)
+        PacketArea.append(["No packets"])
+
+        PacketView = Gtk.TreeView(PacketArea)
+
+
+        Render_Packet = Gtk.CellRendererText()
+        PacketViewCol = Gtk.TreeViewColumn("Packets",Render_Packet,text=0)
+        PacketView.append_column(PacketViewCol) 
+
+        MessageTypeTemplateBox.pack_start(MessageTypeTemplateLabel,False,False,0)
+        MessageTypeTemplateBox.pack_start(PacketView,False,False,0)
+        TemplateBox.pack_start(MessageTypeTemplateBox,False,False,0)
+
+        OperationButtonsTypeTemplate = Gtk.Box(spacing=2)
+        SaveButtonTypeTemplate = Gtk.Button(label="Save")
+        ClearButtonTypeTemplate= Gtk.Button(label="Clear")
+        OperationButtonsTypeTemplate.pack_start(SaveButtonTypeTemplate,False,False,0)
+        OperationButtonsTypeTemplate.pack_start(ClearButtonTypeTemplate,False,False,0)
+
+        TemplateBox.pack_start(OperationButtonsTypeTemplate,False,False,0)
+
+        MessageTypeTabs.append_page(TemplateBox)
+        MessageTypeTabs.set_tab_label_text(TemplateBox,"Template")
+        #End of Template
+
         #Start of Equivalency
         EquivalencyBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL,spacing=0)
         FieldEquivalencyEqualBox = Gtk.Box(spacing=0)
