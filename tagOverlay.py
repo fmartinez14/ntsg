@@ -11,7 +11,7 @@ class openPCAP(Gtk.ListBoxRow):
 class openPCAPwindow(Gtk.Window):
 
     def __init__(self):
-        Gtk.Window.__init__(self, title="PCAP")
+        Gtk.Window.__init__(self, title="Tag")
         self.set_border_width(10)
 
         box_outer = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
