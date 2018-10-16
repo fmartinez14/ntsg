@@ -40,7 +40,25 @@ class filterOverlayWindow(Gtk.Window):
         column = Gtk.TreeViewColumn("Filter Expression", renderer, text=1)
         filterTree.append_column(column)
         box_outer.pack_start(filterTree, True, True, 0)
-        
+
+        buttonBox = Gtk.ListBox()
+        buttonBox.set_selection_mode(Gtk.SelectionMode.NONE)
+        box_outer.pack_start(buttonBox, True, True, 0)
+
+        buttonRow = Gtk.ListBoxRow()
+        hbutton = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=50)
+        buttonRow.add(hbutton)
+        vbutton = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        hbutton.pack_start(vbutton, True, True, 0)
+
+        CreateButton = Gtk.Button(label="Create")
+        UpdateButton = Gtk.Button(label="Update")
+        DeleteButton = Gtk.Button(label="Delete")
+        vbutton.pack_start(CreateButton, True, True, 0)
+        hbutton.pack_start(UpdateButton, True, True, 0)
+        hbutton.pack_start(DeleteButton, True, True, 0)
+
+        buttonBox.add(buttonRow)
 
 #end filterBox
         filterDescription = Gtk.Label("Filter Description")
