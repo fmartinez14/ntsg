@@ -85,12 +85,12 @@
         
         PDMLBox.pack_start(FilterBox,True,True,0)
     #End of Filter Area
-    #End of PDML View 
     
-    
-    #Mehtod for combobox in PDML View
+    #Method for combobox in PDML View
     def on_name_combo_changed(self, combo):
         tree_iter = combo.get_active_iter()
         if tree_iter is not None:
             model = combo.get_model()
             myFilter = model[tree_iter][0]
+    
+    #End of PDML View 
