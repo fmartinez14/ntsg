@@ -29,6 +29,14 @@ class Session(Gtk.Box):
 		Session.pack_start(SessionLabel,False,False,0)
 		self._sessions.append(Session)
 
+	def deleteSession(self,widget):
+		getSessions = self._sessions
+		if len(getSessions) > 1:
+			getSessions[-1].set_child_visible(False)
+			del getSessions[-1]
+
+
+
 	def showSessions(self):
 		sns = self._sessions
 		for x in range(len(sns)):

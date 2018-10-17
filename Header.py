@@ -36,6 +36,12 @@ class Header(Gtk.Box):
    	   	   SessionWidget.show_all()
 
 
+
+   	def Workspace_clicked(self, widget):
+   		   from launcherOverlay import launcherOverlayWindow
+   		   LauncherWidget = launcherOverlayWindow()
+   	   	   LauncherWidget.show_all()
+
    	def Terminal_clicked(self, widget):
    		   from terminalOverlay import openTerminalwindow
    		   TerminalWidget = openTerminalwindow()
