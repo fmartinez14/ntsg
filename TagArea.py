@@ -6,7 +6,7 @@ class TagArea(Gtk.Box):
 
 	_fields = list()
 	_buttons = list()
-	
+
 	def __init__(self):
 		Gtk.Box.__init__(self,orientation=Gtk.Orientation.VERTICAL,spacing=0)
 

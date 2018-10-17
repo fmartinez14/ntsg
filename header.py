@@ -6,7 +6,7 @@ class Header(Gtk.Box):
 
 	HeaderBox = Gtk.Box()
 	_buttons = list()
-	
+
 	def __init__(self, labelString='New Header'):
 		self.HeaderBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
 		self.HeaderBox.set_baseline_position(Gtk.BaselinePosition.CENTER)
@@ -31,3 +31,5 @@ class Header(Gtk.Box):
 		btns = self._buttons
 		for x in range(len(btns)):
 			self.HeaderBox.pack_end(btns[x],False,False,3)
+
+    

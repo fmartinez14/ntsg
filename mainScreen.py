@@ -18,15 +18,16 @@ class LabelWindow(Gtk.Window):
         # screenWidth = Gdk.Screen.get_width(Gdk.Screen.get_default())
         # screenHeigth = Gdk.Screen.get_height(Gdk.Screen.get_default())
         # Gtk.Window.resize(self,screenWidth/10,screenHeigth/3)
-
+        self.PCAPWidget=""
         mainGrid = Gtk.Grid()
-        mainGrid.set_column_spacing(4)
-        mainGrid.set_row_spacing(4)
-        mainGrid.set_row_homogeneous(False)
-        mainGrid.set_hexpand(False)
-
-        for x in range(4):
-        	mainGrid.set_row_baseline_position(x,Gtk.BaselinePosition.CENTER)
+        # mainGrid.set_column_spacing(4)
+        # mainGrid.set_row_spacing(4)
+        # mainGrid.set_row_homogeneous(False)
+        # mainGrid.set_hexpand(False)
+        self.add(mainGrid)
+        #
+        # for x in range(4):
+        	# mainGrid.set_row_baseline_position(x,Gtk.BaselinePosition.CENTER)
 
    #Start of Header
     	HeaderBox = Header("Network Traffic Based Software Generation")
@@ -34,14 +35,21 @@ class LabelWindow(Gtk.Window):
     	HeaderBox.addButton("Create Session")
     	HeaderBox.addButton("Open Session")
     	HeaderBox.addButton("Close Session")
-    	HeaderBox.addButton("Open Session")
     	HeaderBox.addButton("Switch Workspace")
     	HeaderBox.addButton("Open PCAP")
     	HeaderBox.addButton("Terminal")
     	HeaderBox.showButtons()
 
+        HeaderButtons = HeaderBox._buttons
+
+        HeaderButtons[5].connect("clicked", HeaderBox.Terminal_clicked)
+        HeaderButtons[1].connect("clicked", HeaderBox.OpenSession_clicked)
+        HeaderButtons[4].connect("clicked",HeaderBox.PCAP_clicked)
+
+
     	mainGrid.attach(HeaderBox,0,0,4,1)
     #End of Header
+
 
     #Image Containing the status.
     	StatusIndicator = Gtk.Image.new_from_file ("statusIndicator.png")
@@ -51,7 +59,7 @@ class LabelWindow(Gtk.Window):
         mainGrid.attach(StatusBox,0,1,4,1)
         StatusBox.pack_start(StatusIndicator,False,True,0)
     #End of Image containing the Status.
-    	
+
     #Start of Sessions View
         SessionsBox = Session()
         SessionsBox.addSession("Session A")
@@ -61,7 +69,7 @@ class LabelWindow(Gtk.Window):
 
         mainGrid.attach(SessionsBox,0,2,1,1)
 	#End of Sessions View
-    	
+
     #Start of PDML View
         PDMLFrame = Gtk.Frame()
         PDMLBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL,spacing=0)
@@ -84,6 +92,7 @@ class LabelWindow(Gtk.Window):
         TagBox.addButton("Cancel")
         TagBox.showButtons()
 
+
         mainGrid.attach(TagBox,0,3,1,1)
     #End of Tagging View
 
@@ -92,11 +101,11 @@ class LabelWindow(Gtk.Window):
         mainGrid.attach(FieldAreaBox,1,3,1,1)
 
         FieldAreaBox.addField("icmp.type","Type 8 [Echo ping request]" , 1, 34, "8", "8", 2)
-        FieldAreaBox.addField("icmp.code","Code 0" , 1, 35, "00", "0", 2)
-        FieldAreaBox.addField("icmp.checksum","Checksum: 0x6861 [Correct]" , 0, 36, "0x6861", "6861", 0)
-        FieldAreaBox.addField("icmp.Ident","Identifier: 0x809e" , 2, 38, "0x809e", "809e", 2)
-        FieldAreaBox.addField("icmp.seq","Sequence number: 0x0f00" , 2, 40, "0x0f00", "0f00", 2)
-        self.add(mainGrid)
+        # FieldAreaBox.addField("icmp.code","Code 0" , 1, 35, "00", "0", 2)
+        # FieldAreaBox.addField("icmp.checksum","Checksum: 0x6861 [Correct]" , 0, 36, "0x6861", "6861", 0)
+        # FieldAreaBox.addField("icmp.Ident","Identifier: 0x809e" , 2, 38, "0x809e", "809e", 2)
+        # FieldAreaBox.addField("icmp.seq","Sequence number: 0x0f00" , 2, 40, "0x0f00", "0f00", 2)
+
  #        self.FieldAreaTable = Gtk.ListStore(str,str,int,int,str,str,int)
 
 
@@ -245,7 +254,7 @@ class LabelWindow(Gtk.Window):
 
         Render_Packet = Gtk.CellRendererText()
         PacketViewCol = Gtk.TreeViewColumn("Packets",Render_Packet,text=0)
-        PacketView.append_column(PacketViewCol) 
+        PacketView.append_column(PacketViewCol)
 
         MessageTypeTemplateBox.pack_start(MessageTypeTemplateLabel,False,False,0)
         MessageTypeTemplateBox.pack_start(PacketView,False,False,0)
@@ -347,18 +356,17 @@ class LabelWindow(Gtk.Window):
         MessageTypeBox.pack_start(MessageTypeTabs,False,False,0)
     #End of Message Type View
 
-    # def name_edited(self, widget, path, text):
-    #     self.FieldAreaTable[path][0] = text
-    # def showName_edited(self, widget, path, text):
-    #     self.FieldAreaTable[path][1] = text
-    # def size_edited(self, widget, path, text):
-    #     self.FieldAreaTable[path][2] = int(text)
-    # def value_edited(self, widget, path, text):
-    #     self.FieldAreaTable[path][5] = text
+
+
+
+
+           # mainGrid.attach(PCAPWidget,1,4,1)
+
+
 
 
 window = LabelWindow()
-window.set_default_size(200, 300)
+# window.set_default_size(200, 300)
 window.connect("destroy", Gtk.main_quit)
 window.show_all()
 Gtk.main()

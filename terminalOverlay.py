@@ -2,13 +2,13 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
-class openPCAP(Gtk.ListBoxRow):
+class openTerminal(Gtk.ListBoxRow):
     def __init__(self, data):
         super(Gtk.ListBoxRow, self).__init__()
         self.data = data
         self.add(Gtk.Label(data))
 
-class openPCAPwindow(Gtk.Window):
+class openTerminalwindow(Gtk.Window):
 
     def __init__(self):
         Gtk.Window.__init__(self, title="Terminal")
@@ -22,7 +22,7 @@ class openPCAPwindow(Gtk.Window):
         box_outer.pack_start(terminalDescription, False, False, 0)
 
 
-win = openPCAPwindow()
+win = openTerminalwindow()
 win.connect("destroy", Gtk.main_quit)
 win.show_all()
 Gtk.main()

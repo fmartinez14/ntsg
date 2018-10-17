@@ -4,7 +4,7 @@ from gi.repository import Gtk
 
 class Header(Gtk.Box):
 	_buttons = list()
-	
+	PCAPWidget=""
 	def __init__(self, labelString='New Header'):
 		Gtk.Box.__init__(self,orientation=Gtk.Orientation.HORIZONTAL)
 
@@ -24,3 +24,24 @@ class Header(Gtk.Box):
 	def showButtons(self):
 		for x in range(len(self._buttons)):
 			self.pack_end(self._buttons[x],True,True,3)
+
+	def PCAP_clicked(self, widget):
+		   from openPCAPoverlay import openPCAPwindow
+		   PCAPWidget = openPCAPwindow()
+	   	   PCAPWidget.show_all()
+
+   	def OpenSession_clicked(self, widget):
+   		   from openSessionOverlay import openSessionwindow
+   		   SessionWidget = openSessionwindow()
+   	   	   SessionWidget.show_all()
+
+
+   	def Terminal_clicked(self, widget):
+   		   from terminalOverlay import openTerminalwindow
+   		   TerminalWidget = openTerminalwindow()
+   	   	   TerminalWidget.show_all()
+
+  	# def PCAP_clicked(self, widget):
+  	# 	   from openPCAPoverlay import openPCAPwindow
+  	# 	   PCAPWidget = openPCAPwindow()
+  	#    	   PCAPWidget.show_all()

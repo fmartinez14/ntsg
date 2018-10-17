@@ -2,13 +2,13 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
-class openPCAP(Gtk.ListBoxRow):
+class openSession(Gtk.ListBoxRow):
     def __init__(self, data):
         super(Gtk.ListBoxRow, self).__init__()
         self.data = data
         self.add(Gtk.Label(data))
 
-class openPCAPwindow(Gtk.Window):
+class openSessionwindow(Gtk.Window):
 
     def __init__(self):
         Gtk.Window.__init__(self, title="Open Session")
@@ -54,7 +54,7 @@ class openPCAPwindow(Gtk.Window):
         listbox.add(row)
 
 
-win = openPCAPwindow()
+win = openSessionwindow()
 win.connect("destroy", Gtk.main_quit)
 win.show_all()
 Gtk.main()
