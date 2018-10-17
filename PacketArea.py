@@ -1,8 +1,18 @@
+import gi
+gi.require_version('Gtk','3.0')
+from gi.repository import Gtk
+
+class PacketArea(Gtk.Box):
+
+    def __init__(self):
+
+        Gtk.Box.__init__(self,orientation=Gtk.Orientation.VERTICAL,spacing=0)
     #Start of Packet area
         PacketLabelBox = Gtk.Box(spacing=0)
         
         PacketAreaLabel = Gtk.Label("Packet Area")
         PacketLabelBox.pack_start(PacketAreaLabel,False,False,0)
+        PDMLBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         PDMLBox.pack_start(PacketLabelBox,True,True,0)
         
         PacketBox = Gtk.Box(spacing=5)
@@ -36,7 +46,7 @@
         
         Render_Showname= Gtk.CellRendererText()
         Render_Showname.set_property("editable",True)
-        Render_Showname.connect("edited",self.showName_edited)
+        # Render_Showname.connect("edited",self.showName_edited)
         SecondColumn = Gtk.TreeViewColumn("Size",Render_Showname,text=2)
         TableView.append_column(SecondColumn)
         

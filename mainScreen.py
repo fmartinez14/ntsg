@@ -6,6 +6,8 @@ from Header import Header
 from Session import Session
 from TagArea import TagArea
 from FieldArea import FieldArea
+from PDMLView import PDMLView
+from PacketArea import PacketArea
 
 
 class LabelWindow(Gtk.Window):
@@ -72,11 +74,14 @@ class LabelWindow(Gtk.Window):
 
     #Start of PDML View
         PDMLFrame = Gtk.Frame()
-        PDMLBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL,spacing=0)
-        PDMLBox.add(PDMLFrame)
+        PDMLBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         PDMLLabel = Gtk.Label("PDML View")
         PDMLLabel.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("light blue"))
         PDMLBox.pack_start(PDMLLabel,False,False,0)
+        PDMLViewBox = PDMLView()
+        PDMLBox.pack_start(PDMLViewBox,False,False,0)
+        PacketAreaBox = PacketArea()
+        PDMLBox.pack_start(PacketAreaBox,False,False,0)
         mainGrid.attach(PDMLBox,1,2,3,1)
     #End of PDML View
 
@@ -246,10 +251,10 @@ class LabelWindow(Gtk.Window):
 
         MessageTypeTemplateBox = Gtk.Box(spacing=0)
         MessageTypeTemplateLabel = Gtk.Label("Message Type \n Template Field Value \n Pair(s)")
-        PacketArea = Gtk.ListStore(str)
-        PacketArea.append(["No packets"])
+        PacketAreaField = Gtk.ListStore(str)
+        PacketAreaField.append(["No packets"])
 
-        PacketView = Gtk.TreeView(PacketArea)
+        PacketView = Gtk.TreeView(PacketAreaField)
 
 
         Render_Packet = Gtk.CellRendererText()

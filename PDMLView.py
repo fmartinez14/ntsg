@@ -1,14 +1,24 @@
+import gi
+gi.require_version('Gtk','3.0')
+from gi.repository import Gtk
 
+class PDMLView(Gtk.Box):
+
+    def __init__(self):
+
+        Gtk.Box.__init__(self,orientation=Gtk.Orientation.VERTICAL,spacing=0)
 
 #Start of PDML View
+        mainGrid = Gtk.Grid()
         PDMLFrame = Gtk.Frame()
         PDMLBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL,spacing=0)
         mainGrid.attach(PDMLBox,1,2,4,1)
         PDMLBox.add(PDMLFrame)
+        self.add(mainGrid)
         
     #Title
-        PDMLLabel = Gtk.Label("PDML View")
-        PDMLBox.pack_start(PDMLLabel,True,True,0)
+        # PDMLLabel = Gtk.Label("PDML View")
+        # PDMLBox.pack_start(PDMLLabel,True,True,0)
      
     #First row
         PDMLButtons = Gtk.Box(spacing=5)

@@ -44,20 +44,27 @@ class FieldArea(Gtk.Box):
 			self.treeview.append_column(column)
 
 		#Creating buttons to filter by programming lang, and setting up their events
-		self.buttons = list()
-		for prog_language in ["Java", "C", "C++", "Python", "None"]:
-			button = Gtk.Button(prog_language)
-			self.buttons.append(button)
-			button.connect("clicked", self.on_selection_button_clicked)
+		# self.buttons = list()
+		# for prog_language in ["Java", "C", "C++", "Python", "None"]:
+		# 	button = Gtk.Button(prog_language)
+		# 	self.buttons.append(button)
+		# 	button.connect("clicked", self.on_selection_button_clicked)
 
 		#Setting up the layout, putting the treeview in a scrollowindow, and the buttons in a row
 		self.scrollable_treelist = Gtk.ScrolledWindow()
 		self.scrollable_treelist.set_vexpand(True)
-		self.grid.attach(self.scrollable_treelist, 0, 0, 8, 10)
-		self.grid.attach_next_to(self.buttons[0], self.scrollable_treelist, Gtk.PositionType.BOTTOM, 1, 1)
-		for i, button in enumerate(self.buttons[1:]):
-			self.grid.attach_next_to(button, self.buttons[i], Gtk.PositionType.RIGHT, 1, 1)
 		self.scrollable_treelist.add(self.treeview)
+
+		FieldBottomBox = Gtk.Box(spacing=10)
+		SelectFieldsBox = Gtk.CheckButton(label="Select all fields")
+		EditFieldsLabel = Gtk.Label("Field Name, showName, Value and Length are editable fields.")
+		FieldBottomBox.pack_start(SelectFieldsBox, False, False, 0)
+		FieldBottomBox.pack_start(EditFieldsLabel, False, False, 0)
+		self.grid.attach(self.scrollable_treelist, 0, 0, 1, 1)
+		self.grid.attach(FieldBottomBox, 0,1,1,1)
+		# self.grid.attach_next_to(self.buttons[0], self.scrollable_treelist, Gtk.PositionType.BOTTOM, 1, 1)
+		# for i, button in enumerate(self.buttons[1:]):
+		# 	self.grid.attach_next_to(button, self.buttons[i], Gtk.PositionType.RIGHT, 1, 1)
 
 		self.show_all()
 
@@ -121,10 +128,10 @@ class FieldArea(Gtk.Box):
 		else:
 			return model[iter][2] == self.current_filter_language
 
-	def on_selection_button_clicked(self, widget):
-		"""Called on any of the button clicks"""
-		#We set the current language filter to the button's label
-		self.current_filter_language = widget.get_label()
-		# print("%s language selected!" % self.current_filter_language)
-		#We update the filter, which updates in turn the view
-		self.language_filter.refilter()
+	# def on_selection_button_clicked(self, widget):
+	# 	"""Called on any of the button clicks"""
+	# 	#We set the current language filter to the button's label
+	# 	self.current_filter_language = widget.get_label()
+	# 	# print("%s language selected!" % self.current_filter_language)
+	# 	#We update the filter, which updates in turn the view
+	# 	self.language_filter.refilter()
