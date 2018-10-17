@@ -6,6 +6,7 @@ class Session(Gtk.Box):
 
 	WorkSpaceBox = Gtk.Box()
 	_sessions = list()
+	CurrSession=0
 	# need to rewrite the class to have state objects
 	_states = list()
 
@@ -28,14 +29,19 @@ class Session(Gtk.Box):
 		SessionLabel = Gtk.Label(name + "\n  -State1")
 		Session.pack_start(SessionLabel,False,False,0)
 		self._sessions.append(Session)
+		self.CurrSession +=1
 
 	def deleteSession(self,widget):
 		getSessions = self._sessions
-		if len(getSessions) > 1:
-			getSessions[-1].set_child_visible(False)
-			del getSessions[-1]
+		if self.CurrSession > 1:
+			self.CurrSession -= 1
+			getSessions[self.CurrSession].set_child_visible(False)
 
-
+	def showSession(self,widget):
+		getSessions = self._sessions
+		if self.CurrSession <= 2:
+			getSessions[self.CurrSession].set_child_visible(True)
+			self.CurrSession+=1
 
 	def showSessions(self):
 		sns = self._sessions
