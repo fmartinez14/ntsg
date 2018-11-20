@@ -53,8 +53,8 @@ class openSessionwindow(Gtk.Window):
 
         listbox.add(row)
 
-
-win = openSessionwindow()
-win.connect("destroy", Gtk.main_quit)
-win.show_all()
-Gtk.main()
+if __name__ == '__main__':
+    win = openSessionwindow()
+    win.connect("destroy", Gtk.main_quit)
+    win.show_all()
+    Gtk.main()

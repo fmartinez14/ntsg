@@ -21,8 +21,8 @@ class openTerminalwindow(Gtk.Window):
         terminalDescription.set_text("[Destination Folder Path] > [Generated Files]")
         box_outer.pack_start(terminalDescription, False, False, 0)
 
-
-win = openTerminalwindow()
-win.connect("destroy", Gtk.main_quit)
-win.show_all()
-Gtk.main()
+if __name__ == '__main__':
+    win = openTerminalwindow()
+    win.connect("destroy", Gtk.main_quit)
+    win.show_all()
+    Gtk.main()

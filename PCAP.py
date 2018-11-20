@@ -7,7 +7,7 @@ class PCap:
     def convertPCAP(self):
         fileName = self.obtainFileName()
         print "Converting"
-        print("tshark -r "+ self.fileLocation + " -T pdml > " + fileName)
+        print("Arguments: tshark -r "+ self.fileLocation + " -T pdml > " + fileName)
         call("tshark -r "+ self.fileLocation + " -T pdml > " + fileName,shell=True)
         print "Done"
 
