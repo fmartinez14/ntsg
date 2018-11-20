@@ -36,14 +36,14 @@ class openPCAPwindow(Gtk.Window):
         pcapLabel = Gtk.Label("PCAP Name", xalign=0)
         vbox.pack_start(pcapLabel, False, True, 0)
 
-        pcapEntry = Gtk.Entry()
-        pcapEntry.props.valign = Gtk.Align.CENTER
-        pcapEntry.set_text(self.PCAPLocation)
+        self.pcapEntry = Gtk.Entry()
+        self.pcapEntry.props.valign = Gtk.Align.CENTER
+
         pcapBrowse = Gtk.Button("Browse")
 
         pcapBrowse.connect("clicked",self.openPCAP)
 
-        hbox.pack_start(pcapEntry, False, True, 0)
+        hbox.pack_start(self.pcapEntry, False, True, 0)
         hbox.pack_start(pcapBrowse, False, True, 0)
 
         listbox.add(row)
@@ -65,14 +65,12 @@ class openPCAPwindow(Gtk.Window):
         row.add(hbox)
         ConvertButton = Gtk.Button(label="Convert to PDML")
         CancelButton = Gtk.Button(label="Cancel")
-        ConvertButton.connect("clicked",self.exitDialog)
-        CancelButton.connect("clicked",self.exitDialog)
+        ConvertButton.connect("clicked",self.exitProcess)
+        CancelButton.connect("clicked",self.exitPrompt)
         hbox.pack_start(ConvertButton, True, True, 0)
         hbox.pack_start(CancelButton, True, True, 0)
 
         listbox.add(row)
-
-
 
 
     def openPCAP(self, widget):
@@ -88,11 +86,15 @@ class openPCAPwindow(Gtk.Window):
             print("Open clicked")
             print("PCAP File Path" + dialog.get_filename())
             self.PCAPLocation = dialog.get_filename()
-
+            self.pcapEntry.set_text(self.PCAPLocation)
         elif response == Gtk.ResponseType.CANCEL:
             print("Cancel clicked")
 
         dialog.destroy()
+
+
+    def exitPrompt(self,widget):
+        self.destroy()
 
     def fileFilters(self, dialog):
 
@@ -106,14 +108,14 @@ class openPCAPwindow(Gtk.Window):
         allFiles.add_pattern("*")
         dialog.add_filter(allFiles)
 
-    def exitDialog(self,widget):
+    def exitProcess(self,widget):
         # global PCAPLocation
         if(self.PCAPLocation == ""):
             win.destroy()
         myPCAP = PCAP.PCap(self.PCAPLocation)
         myPCAP.convertPCAP()
         print "Success!"
-        win.destroy()
+        self.destroy()
 
 if __name__ == '__main__':
     win = openPCAPwindow()
