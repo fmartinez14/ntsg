@@ -115,7 +115,8 @@ class openPCAPwindow(Gtk.Window):
         print "Success!"
         win.destroy()
 
-win = openPCAPwindow()
-win.connect("destroy", Gtk.main_quit)
-win.show_all()
-Gtk.main()
+if __name__ == '__main__':
+    win = openPCAPwindow()
+    win.connect("destroy", Gtk.main_quit)
+    win.show_all()
+    Gtk.main()
