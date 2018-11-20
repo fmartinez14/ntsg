@@ -28,24 +28,24 @@ class Header(Gtk.Box):
 	def PCAP_clicked(self, widget):
 		   from openPCAPoverlay import openPCAPwindow
 		   PCAPWidget = openPCAPwindow()
-	   	   PCAPWidget.show_all()
+		   PCAPWidget.show_all()
 
    	def OpenSession_clicked(self, widget):
    		   from openSessionOverlay import openSessionwindow
    		   SessionWidget = openSessionwindow()
-   	   	   SessionWidget.show_all()
+   		   SessionWidget.show_all()
 
 
 
    	def Workspace_clicked(self, widget):
    		   from launcherOverlay import launcherOverlayWindow
    		   LauncherWidget = launcherOverlayWindow()
-   	   	   LauncherWidget.show_all()
+   		   LauncherWidget.show_all()
 
    	def Terminal_clicked(self, widget):
    		   from terminalOverlay import openTerminalwindow
    		   TerminalWidget = openTerminalwindow()
-   	   	   TerminalWidget.show_all()
+   		   TerminalWidget.show_all()
 
   	# def PCAP_clicked(self, widget):
   	# 	   from openPCAPoverlay import openPCAPwindow

@@ -32,15 +32,15 @@ class LabelWindow(Gtk.Window):
         	# mainGrid.set_row_baseline_position(x,Gtk.BaselinePosition.CENTER)
 
    #Start of Header
-    	HeaderBox = Header("Network Traffic Based Software Generation")
+        HeaderBox = Header("Network Traffic Based Software Generation")
 
-    	HeaderBox.addButton("Create Session")
-    	HeaderBox.addButton("Open Session")
-    	HeaderBox.addButton("Close Session")
-    	HeaderBox.addButton("Switch Workspace")
-    	HeaderBox.addButton("Open PCAP")
-    	HeaderBox.addButton("Terminal")
-    	HeaderBox.showButtons()
+        HeaderBox.addButton("Create Session")
+        HeaderBox.addButton("Open Session")
+        HeaderBox.addButton("Close Session")
+        HeaderBox.addButton("Switch Workspace")
+        HeaderBox.addButton("Open PCAP")
+        HeaderBox.addButton("Terminal")
+        HeaderBox.showButtons()
 
         HeaderButtons = HeaderBox._buttons
 
@@ -49,12 +49,12 @@ class LabelWindow(Gtk.Window):
         HeaderButtons[4].connect("clicked",HeaderBox.PCAP_clicked)
 
 
-    	mainGrid.attach(HeaderBox,0,0,4,1)
+        mainGrid.attach(HeaderBox,0,0,4,1)
     #End of Header
 
 
     #Image Containing the status.
-    	StatusIndicator = Gtk.Image.new_from_file ("statusIndicator.png")
+        StatusIndicator = Gtk.Image.new_from_file ("statusIndicator.png")
         StatusFrame = Gtk.Frame()
         StatusBox = Gtk.Box(spacing=0)
         StatusBox.add(StatusFrame)
