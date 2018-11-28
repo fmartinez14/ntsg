@@ -7,15 +7,15 @@ class openPCAP(Gtk.ListBoxRow):
     def __init__(self, data):
         super(Gtk.ListBoxRow, self).__init__()
         self.data = data
-        self.PCAPLocation=""
         self.add(Gtk.Label(data))
 
 class openPCAPwindow(Gtk.Window):
     PCAPLocation = ""
-    def __init__(self):
+    # tempVar = ""
+    def __init__(self,main):
         Gtk.Window.__init__(self, title="PCAP")
         self.set_border_width(10)
-
+        self.main = main
         box_outer = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         self.add(box_outer)
 
@@ -63,11 +63,11 @@ class openPCAPwindow(Gtk.Window):
         row = Gtk.ListBoxRow()
         hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing = 50)
         row.add(hbox)
-        ConvertButton = Gtk.Button(label="Convert to PDML")
+        self.ConvertButton = Gtk.Button(label="Convert to PDML")
         CancelButton = Gtk.Button(label="Cancel")
-        ConvertButton.connect("clicked",self.exitProcess)
+        self.ConvertButton.connect("clicked",self.exitProcess)
         CancelButton.connect("clicked",self.exitPrompt)
-        hbox.pack_start(ConvertButton, True, True, 0)
+        hbox.pack_start(self.ConvertButton, True, True, 0)
         hbox.pack_start(CancelButton, True, True, 0)
 
         listbox.add(row)
@@ -84,8 +84,9 @@ class openPCAPwindow(Gtk.Window):
         response = dialog.run()
         if response == Gtk.ResponseType.OK:
             print("Open clicked")
-            print("PCAP File Path" + dialog.get_filename())
+            print("PCAP File Path: " + dialog.get_filename())
             self.PCAPLocation = dialog.get_filename()
+            PCAPLocation = self.PCAPLocation
             self.pcapEntry.set_text(self.PCAPLocation)
         elif response == Gtk.ResponseType.CANCEL:
             print("Cancel clicked")
@@ -95,6 +96,7 @@ class openPCAPwindow(Gtk.Window):
 
     def exitPrompt(self,widget):
         self.destroy()
+
 
     def fileFilters(self, dialog):
 
@@ -114,6 +116,7 @@ class openPCAPwindow(Gtk.Window):
             win.destroy()
         myPCAP = PCAP.PCap(self.PCAPLocation)
         myPCAP.convertPCAP()
+        self.main.PDMLLocation= myPCAP.obtainFilePath()
         print "Success!"
         self.destroy()
 

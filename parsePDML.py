@@ -2,7 +2,7 @@ import xml.etree.ElementTree as ET
 from Packet import Packet
 from Protocol import Protocol
 from Field import Field
-from pprint import pprint
+
 
 def parsePDML(): #Dont use me , parses pdml but does not create objects inside the packets.
     myFile = open("projectPCAP.pdml", 'r')
@@ -32,8 +32,8 @@ def printTree(leTree): #Dont use me, used for debugging the extraction and creat
             print("\n")
 
 
-def makePackets(): #Creates a Packet Dictionary object, where the keys are Packet objects and the values are Protocol objects. Furthermore, the Protocol Dictionary that is also returned contains the protocols as keys and a list of fields as a value.
-    myFile = open("projectPCAP.pdml", 'r')
+def makePackets(fileName): #Creates a Packet Dictionary object, where the keys are Packet objects and the values are Protocol objects. Furthermore, the Protocol Dictionary that is also returned contains the protocols as keys and a list of fields as a value.
+    myFile = open(fileName, 'r')
 
     # create element tree object
     tree = ET.parse(myFile)
@@ -72,8 +72,8 @@ def printPackets(Packets,Protocols): #Prints the resulting packet/protocol/field
                 print(myField.name)
 
 
-
-# tester = parsePDML()
-tester = makePackets()
-printPackets(tester[0],tester[1])
-# printTree(tester)
+if __name__ == '__main__':
+    # tester = parsePDML()
+    tester = makePackets()
+    printPackets(tester[0],tester[1])
+    # printTree(tester)

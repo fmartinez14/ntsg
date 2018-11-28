@@ -14,13 +14,15 @@ class LabelWindow(Gtk.Window):
 
 	#screenWidth = 100
 	#screenHeigth = 45
-
     def __init__(self):
         Gtk.Window.__init__(self, title="Network Traffic Based Software Generation")
         # screenWidth = Gdk.Screen.get_width(Gdk.Screen.get_default())
         # screenHeigth = Gdk.Screen.get_height(Gdk.Screen.get_default())
         # Gtk.Window.resize(self,screenWidth/10,screenHeigth/3)
         self.PCAPWidget=""
+        self.PacketList={}
+        self.ProtocolList={}
+        self.PacketAreaBox = PacketArea()
         mainGrid = Gtk.Grid()
         # mainGrid.set_column_spacing(4)
         # mainGrid.set_row_spacing(4)
@@ -32,7 +34,7 @@ class LabelWindow(Gtk.Window):
         	# mainGrid.set_row_baseline_position(x,Gtk.BaselinePosition.CENTER)
 
    #Start of Header
-        HeaderBox = Header("Network Traffic Based Software Generation")
+        HeaderBox = Header(self,"Network Traffic Based Software Generation")
 
         HeaderBox.addButton("Create Session")
         HeaderBox.addButton("Open Session")
@@ -68,21 +70,24 @@ class LabelWindow(Gtk.Window):
         SessionsBox.addSession("Session B")
         SessionsBox.addSession("Session C")
         SessionsBox.showSessions()
-
+        SessionsBox.set_vexpand(True)
         mainGrid.attach(SessionsBox,0,2,1,1)
 	#End of Sessions View
 
     #Start of PDML View
-        PDMLFrame = Gtk.Frame()
-        PDMLBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        # PDMLFrame = Gtk.Frame()
+        PDMLBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL,spacing=0)
         PDMLLabel = Gtk.Label("PDML View")
         PDMLLabel.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("light blue"))
         PDMLBox.pack_start(PDMLLabel,False,False,0)
         PDMLViewBox = PDMLView()
         PDMLBox.pack_start(PDMLViewBox,False,False,0)
-        PacketAreaBox = PacketArea()
-        PDMLBox.pack_start(PacketAreaBox,False,False,0)
-        mainGrid.attach(PDMLBox,1,2,3,1)
+
+        PDMLBox.add(self.PacketAreaBox)
+        PDMLBox.set_hexpand(True)
+        # PDMLBox.pack_start(self.PacketAreaBox,True,True,0)
+
+        mainGrid.attach(PDMLBox,1,2,4,1)
     #End of PDML View
 
     #Start of Tagging View
@@ -105,75 +110,8 @@ class LabelWindow(Gtk.Window):
         FieldAreaBox = FieldArea()
         mainGrid.attach(FieldAreaBox,1,3,1,1)
 
-        FieldAreaBox.addField("icmp.type","Type 8 [Echo ping request]" , 1, 34, "8", "8", 2)
-        # FieldAreaBox.addField("icmp.code","Code 0" , 1, 35, "00", "0", 2)
-        # FieldAreaBox.addField("icmp.checksum","Checksum: 0x6861 [Correct]" , 0, 36, "0x6861", "6861", 0)
-        # FieldAreaBox.addField("icmp.Ident","Identifier: 0x809e" , 2, 38, "0x809e", "809e", 2)
-        # FieldAreaBox.addField("icmp.seq","Sequence number: 0x0f00" , 2, 40, "0x0f00", "0f00", 2)
+        # FieldAreaBox.addField("icmp.type","Type 8 [Echo ping request]" , 1, 34, "8", "8", 2)
 
- #        self.FieldAreaTable = Gtk.ListStore(str,str,int,int,str,str,int)
-
-
- #        FieldAreaFrame= Gtk.Frame()
- #        FieldAreaBox.add(FieldAreaFrame)
-
- #        TableBox = Gtk.Box(spacing=0)
-
-
- #        self.FieldAreaTable.append(["icmp.type","Type 8 [Echo ping request]" , 1, 34, "8", "8", 2])
- #        self.FieldAreaTable.append(["icmp.code","Code 0" , 1, 35, "00", "0", 2])
- #        self.FieldAreaTable.append(["icmp.checksum","Checksum: 0x6861 [Correct]" , 0, 36, "0x6861", "6861", 0])
- #        self.FieldAreaTable.append(["icmp.Ident","Identifier: 0x809e" , 2, 38, "0x809e", "809e", 2])
- #        self.FieldAreaTable.append(["icmp.seq","Sequence number: 0x0f00" , 2, 40, "0x0f00", "0f00", 2])
-
- #        Render_Name = Gtk.CellRendererText()
- #        Render_Name.set_property("editable",True)
- #        Render_Showname= Gtk.CellRendererText()
- #        Render_Showname.set_property("editable",True)
- #        Render_Size= Gtk.CellRendererText()
- #        Render_Size.set_property("editable",True)
- #        Render_Position= Gtk.CellRendererText()
- #        Render_Show = Gtk.CellRendererText()
- #        Render_Value = Gtk.CellRendererText()
- #        Render_Value.set_property("editable",True)
- #        Render_Entropy = Gtk.CellRendererText()
-
- #        TableView = Gtk.TreeView(self.FieldAreaTable)
-
- #        FirstColumn = Gtk.TreeViewColumn("Field Name",Render_Name,text=0)
- #        SecondColumn = Gtk.TreeViewColumn("Show Name",Render_Showname,text=1)
- #        ThirdColumn = Gtk.TreeViewColumn("Size",Render_Size,text=2)
- #        FourthColumn = Gtk.TreeViewColumn("Position",Render_Position,text=3)
- #        FifthColumn = Gtk.TreeViewColumn("Show",Render_Show,text=4)
- #        SixthColumn = Gtk.TreeViewColumn("Value",Render_Value,text=5)
- #        SeventhColumn = Gtk.TreeViewColumn("Entropy",Render_Entropy,text=6)
-
- #        TableView.append_column(FirstColumn)
- #        TableView.append_column(SecondColumn)
- #        TableView.append_column(ThirdColumn)
- #        TableView.append_column(FourthColumn)
- #        TableView.append_column(FifthColumn)
- #        TableView.append_column(SixthColumn)
- #        TableView.append_column(SeventhColumn)
-
-        # Render_Name.connect("edited",self.name_edited)
-        # Render_Showname.connect("edited",self.showName_edited)
-        # Render_Size.connect("edited",self.size_edited)
-        # Render_Value.connect("edited",self.value_edited)
-
- #        TableBox.pack_start(TableView,False,False,0)
-
- #        FieldAreaLabel = Gtk.Label("Field Area")
- #        FieldAreaLabel.set_text("Field Area")
-    #     FieldAreaBox.pack_start(FieldAreaLabel,False,False,0)
-    #     FieldBottomBox = Gtk.Box(spacing=10)
-    #     SelectFieldBox = Gtk.CheckButton(label="Select all fields")
-    #     EditFields = Gtk.Label("Field Name, Showname , Value and Length are editable fields.")
-    #     FieldBottomBox.pack_start(SelectFieldBox,False,False,0)
-    #     FieldBottomBox.pack_start(EditFields,False,False,0)
-    #     FieldAreaBox.pack_start(TableBox,False,False,0)
-    #     FieldAreaBox.pack_start(FieldBottomBox,False,False,0)
-    # #End of Field area views.
 
     #Start of Message Type View
         MessageTypeBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL,spacing=0)
@@ -361,10 +299,11 @@ class LabelWindow(Gtk.Window):
         MessageTypeBox.pack_start(MessageTypeTabs,False,False,0)
     #End of Message Type View
 
-
-
-
-
+    def recievePackets(self,PacketProtocol):
+        print("Recieving packets..")
+        self.PacketList = PacketProtocol[0]
+        self.ProtocolList = PacketProtocol[1]
+        self.PacketAreaBox.postPackets([self.PacketList,self.ProtocolList])
            # mainGrid.attach(PCAPWidget,1,4,1)
 
 

@@ -5,14 +5,17 @@ class PCap:
         self.fileLocation = PCAPLocation
 
     def convertPCAP(self):
-        fileName = self.obtainFileName()
+        fileName = self.obtainFilePath()
         print "Converting"
         print("Arguments: tshark -r "+ self.fileLocation + " -T pdml > " + fileName)
         call("tshark -r "+ self.fileLocation + " -T pdml > " + fileName,shell=True)
         print "Done"
 
-    def obtainFileName(self):
+    def obtainFilePath(self):
         filePath = self.fileLocation.split("/")
         fileName = filePath[-1]
+        del filePath[-1]
         fileExt = fileName.split(".")
-        return fileExt[0] + ".pdml"
+        fileName = fileExt[0] + ".pdml"
+        filePath.append(fileName)
+        return '/'.join(filePath)
