@@ -8,7 +8,7 @@ class stateMachineWindow(Gtk.Window):
         Gtk.Window.__init__(self, title="Network Traffic Based Software Generation - State Machine")
 
         img = Gtk.Image()
-        img.set_from_file("index.png")
+        img.set_from_file("stateMachine.png")
         self.add(img)
 
 
