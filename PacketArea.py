@@ -136,7 +136,9 @@ class PacketArea(Gtk.Box):
                 break
         else:
              self.TableView.collapse_row(row.path)
-        return True # Search does not match
+        return True
+
+        
     # def filterResults(self):
         # filterToApply =
 

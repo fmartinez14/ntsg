@@ -15,6 +15,11 @@ class PDMLView(Gtk.Box):
         mainGrid.attach(PDMLBox,1,2,4,1)
         PDMLBox.add(PDMLFrame)
         self.add(mainGrid)
+        self.myFilter = ""
+        self.Filter1=""
+        self.Filter2=""
+        self.Filter3=""
+
         self.FilterExpression = Gtk.Entry()
     #Title
         # PDMLLabel = Gtk.Label("PDML View")
@@ -80,28 +85,37 @@ class PDMLView(Gtk.Box):
         ClearButton = Gtk.Button(label="Clear")
         FilterBox.pack_start(ClearButton,True,True,0)
 
+        ClearButton.connect("clicked",self.clearFilter)
+
         SaveButton = Gtk.Button(label="Save")
         FilterBox.pack_start(SaveButton,True,True,0)
+
+        SaveButton.connect("clicked",self.saveFilter)
+
+        SaveButton.connect("clicked", self.saveFilter)
 
         SavedFilterLabel = Gtk.Label("Saved Filter")
         FilterBox.pack_start(SavedFilterLabel,True,True,0)
 
     #Filter combobox
-        filter_store = Gtk.ListStore(str)
-        filter_store.append(["Filter 1"])
-        filter_store.append(["Filter 2"])
-        filter_store.append(["Filter 3"])
+        self.filter_store = Gtk.ListStore(str)
+        self.filter_store.append(["Filter 1"])
+        self.filter_store.append(["Filter 2"])
+        self.filter_store.append(["Filter 3"])
 
-        filter_combo = Gtk.ComboBox.new_with_model(filter_store)
-        filter_combo.connect("changed", self.on_name_combo_changed)
+        self.filter_combo = Gtk.ComboBox.new_with_model(self.filter_store)
+        self.filter_combo.connect("changed", self.on_name_combo_changed)
+        self.filter_combo.set_active(0)
+
         renderer_text = Gtk.CellRendererText()
-        filter_combo.pack_start(renderer_text, True)
-        filter_combo.add_attribute(renderer_text, "text", 0)
-        FilterBox.pack_start(filter_combo , False, False, True)
+        self.filter_combo.pack_start(renderer_text, True)
+        self.filter_combo.add_attribute(renderer_text, "text", 0)
+        FilterBox.pack_start(self.filter_combo , False, False, True)
     #End of filter combobox
 
         ApplyButton = Gtk.Button(label="Apply")
         FilterBox.pack_start(ApplyButton,True,True,0)
+        ApplyButton.connect("clicked",self.applyFilter)
 
         PDMLBox.pack_start(FilterBox,True,True,0)
     #End of Filter Area
@@ -111,11 +125,33 @@ class PDMLView(Gtk.Box):
         tree_iter = combo.get_active_iter()
         if tree_iter is not None:
             model = combo.get_model()
-            myFilter = model[tree_iter][0]
+            self.myFilter = model[tree_iter][0]
 
     def filterApplied(self,widget):
         filterText = self.FilterExpression.get_text()
         self.main.filterExpression = self.FilterExpression
         self.main.callFilter()
+
+    def clearFilter(self,widget):
+        self.FilterExpression.set_text("")
+
+    def saveFilter(self,widget):
+        filterText = self.FilterExpression.get_text()
+        if(self.myFilter == "Filter 1" or self.myFilter == ""):
+            self.Filter1 = filterText
+        elif(self.myFilter == "Filter 2"):
+            self.Filter2= filterText
+        elif(self.myFilter == "Filter 3"):
+            self.Filter3 = filterText
+
+    def applyFilter(self,widget):
+        if(self.myFilter == "Filter 1" or self.myFilter == ""):
+            self.FilterExpression.set_text(self.Filter1)
+        elif(self.myFilter == "Filter 2"):
+            self.FilterExpression.set_text(self.Filter2)
+        elif(self.myFilter == "Filter 3"):
+            self.FilterExpression.set_text(self.Filter3)
+
+
 
     #End of PDML View
