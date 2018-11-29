@@ -313,6 +313,8 @@ class LabelWindow(Gtk.Window):
     def deletePacket(self):
         self.PacketAreaBox.deletePacket()
 
+    def clearPackets(self):
+        self.PacketAreaBox.clearPackets()
 
 window = LabelWindow()
 # window.set_default_size(200, 300)

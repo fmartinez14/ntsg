@@ -60,6 +60,7 @@ class PDMLView(Gtk.Box):
         ClearButton = Gtk.Button(label="Clear")
         PDMLButtons.pack_start(ClearButton,True,True,0)
 
+        ClearButton.connect("clicked",self.clearPackets)
         PDMLBox.pack_start(PDMLButtons,False,False,0)
     #End of first row
 
@@ -94,7 +95,6 @@ class PDMLView(Gtk.Box):
 
         SaveButton.connect("clicked",self.saveFilter)
 
-        SaveButton.connect("clicked", self.saveFilter)
 
         SavedFilterLabel = Gtk.Label("Saved Filter")
         FilterBox.pack_start(SavedFilterLabel,True,True,0)
@@ -157,6 +157,9 @@ class PDMLView(Gtk.Box):
 
     def deletePacket(self,widget):
         self.main.deletePacket()
+
+    def clearPackets(self,widget):
+        self.main.clearPackets()
 
 
 

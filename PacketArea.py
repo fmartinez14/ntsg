@@ -159,6 +159,10 @@ class PacketArea(Gtk.Box):
             self.PacketNumber.pop(PacketDelNumber,None)
             self.PacketsDisplay.pop(PacketToDelete,None)
             self.ProtocolsDisplay.pop(PacketToDelete,None)
+
+
+    def clearPackets(self):
+        self.FieldAreaTable.clear()
     # def filterResults(self):
         # filterToApply =
 
