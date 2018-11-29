@@ -22,7 +22,8 @@ class LabelWindow(Gtk.Window):
         self.PCAPWidget=""
         self.PacketList={}
         self.ProtocolList={}
-        self.PacketAreaBox = PacketArea()
+        self.filterExpression="le Filter"
+        self.PacketAreaBox = PacketArea(self)
         mainGrid = Gtk.Grid()
         # mainGrid.set_column_spacing(4)
         # mainGrid.set_row_spacing(4)
@@ -80,7 +81,7 @@ class LabelWindow(Gtk.Window):
         PDMLLabel = Gtk.Label("PDML View")
         PDMLLabel.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("light blue"))
         PDMLBox.pack_start(PDMLLabel,False,False,0)
-        PDMLViewBox = PDMLView()
+        PDMLViewBox = PDMLView(self)
         PDMLBox.pack_start(PDMLViewBox,False,False,0)
 
         PDMLBox.add(self.PacketAreaBox)
@@ -301,11 +302,13 @@ class LabelWindow(Gtk.Window):
 
     def recievePackets(self,PacketProtocol):
         print("Recieving packets..")
-        self.PacketList = PacketProtocol[0]
-        self.ProtocolList = PacketProtocol[1]
-        self.PacketAreaBox.postPackets([self.PacketList,self.ProtocolList])
+        self.PacketNumber = PacketProtocol[0]
+        self.PacketList = PacketProtocol[1]
+        self.ProtocolList = PacketProtocol[2]
+        self.PacketAreaBox.postPackets([self.PacketNumber,self.PacketList,self.ProtocolList])
            # mainGrid.attach(PCAPWidget,1,4,1)
-
+    def callFilter(self):
+        self.PacketAreaBox.filterResults(self.filterExpression)
 
 
 

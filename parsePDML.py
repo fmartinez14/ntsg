@@ -34,7 +34,8 @@ def printTree(leTree): #Dont use me, used for debugging the extraction and creat
 
 def makePackets(fileName): #Creates a Packet Dictionary object, where the keys are Packet objects and the values are Protocol objects. Furthermore, the Protocol Dictionary that is also returned contains the protocols as keys and a list of fields as a value.
     myFile = open(fileName, 'r')
-
+    PacketNumber = {}
+    i = 0
     # create element tree object
     tree = ET.parse(myFile)
 
@@ -46,19 +47,19 @@ def makePackets(fileName): #Creates a Packet Dictionary object, where the keys a
     for item in root.findall('packet'):
         TemporaryPacket = Packet(item.attrib)
         Packets[TemporaryPacket] = None
+        PacketNumber[i]= TemporaryPacket
         Protocols = {}
         for child in item:
             # Packets[item] = child
-
             TemporaryProtocol = Protocol(child.attrib)
             FieldValues = []
             for fields in child.findall('field'):
                 FieldValues.append(Field(fields.attrib))
             Protocols[TemporaryProtocol] = FieldValues
         Packets[TemporaryPacket] = Protocols
+        i +=1
 
-
-    ListMe = [Packets,Protocols]
+    ListMe = [PacketNumber,Packets,Protocols]
     return ListMe
 
 
@@ -71,7 +72,6 @@ def printPackets(Packets,Protocols): #Prints the resulting packet/protocol/field
             print("                         Fields:")
             for myField in fields:
                 print(myField.name)
-
 
 if __name__ == '__main__':
     # tester = parsePDML()

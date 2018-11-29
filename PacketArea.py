@@ -5,14 +5,14 @@ from gi.repository import Gtk
 
 class PacketArea(Gtk.Box):
 
-    def __init__(self):
+    def __init__(self,main):
 
         Gtk.Box.__init__(self,orientation=Gtk.Orientation.VERTICAL,spacing=0)
     #Start of Packet area
         PacketLabelBox = Gtk.Box(spacing=0)
         PacketAreaLabel = Gtk.Label("Packet Area")
         # PacketLabelBox.pack_start(PacketAreaLabel,False,False,0)
-
+        self.main = main
         PDMLBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         PDMLBox.pack_start(PacketLabelBox,True,True,0)
 
@@ -37,7 +37,10 @@ class PacketArea(Gtk.Box):
         # self.FieldAreaTable.append([False,"Frame 767:frame, eth, ip, tcp",2])
         # self.FieldAreaTable.append([False,"Frame 768:frame, eth, ip, tcp",3])
 
-        TableView = Gtk.TreeView(self.FieldAreaTable)
+        self.TableView = Gtk.TreeView(self.FieldAreaTable)
+
+        self.TableView.set_search_equal_func(self.getResults)
+        self.TableView.set_search_column(1)
 
         FieldAreaFrame= Gtk.Frame()
         FieldAreaBox.add(FieldAreaFrame)
@@ -47,23 +50,23 @@ class PacketArea(Gtk.Box):
         # renderer_toggle = Gtk.CellRendererToggle()
         # renderer_toggle.connect("toggled", self.on_cell_toggled)
         # column_toggle = Gtk.TreeViewColumn("", renderer_toggle, active=0)
-        # TableView.append_column(column_toggle)
+        # self.TableView.append_column(column_toggle)
 
         Render_Name = Gtk.CellRendererText()
         FirstColumn = Gtk.TreeViewColumn("Package Name",Render_Name,text=0)
-        TableView.append_column(FirstColumn)
+        self.TableView.append_column(FirstColumn)
 
         Render_Showname= Gtk.CellRendererText()
         Render_Showname.set_property("editable",True)
         # Render_Showname.connect("edited",self.showName_edited)
         SecondColumn = Gtk.TreeViewColumn("Size",Render_Showname,text=1)
-        TableView.append_column(SecondColumn)
+        self.TableView.append_column(SecondColumn)
 
-        ScrollBarPackets.add_with_viewport(TableView)
+        ScrollBarPackets.add_with_viewport(self.TableView)
 
         # self.add(ScrollBarPackets)
 
-        TableBox.pack_start(TableView,False,False,0)
+        TableBox.pack_start(self.TableView,False,False,0)
         FieldAreaBox.pack_start(TableBox,False,False,0)
 
 
@@ -81,30 +84,61 @@ class PacketArea(Gtk.Box):
     #End of Packet area
 
     def postPackets(self,DataList):
-        PacketsDisplay = DataList[0]
+        PacketNumber = DataList[0]
+        PacketsDisplay = DataList[1]
         packetNumber = 0
-        ProtocolsDisplay = DataList[1]
+        ProtocolsDisplay = DataList[2]
         print("Posting packets..")
-        for ProtocolList in PacketsDisplay.values():
-            PacketParent = self.FieldAreaTable.append(None,[self.getFrameProtocols(ProtocolList),0,packetNumber])
-            for Protocol in ProtocolList.keys():
+
+        for Packet in PacketNumber.values():
+            PacketParent = self.FieldAreaTable.append(None,[self.getFrameProtocols(PacketsDisplay[Packet]),0,packetNumber])
+            for Protocol in PacketsDisplay[Packet]:
                 self.FieldAreaTable.append(PacketParent,[Protocol.showname,int(Protocol.size),packetNumber])
             packetNumber +=1
+
+
+    # for ProtocolList in PacketsDisplay.values():
+    #     PacketParent = self.FieldAreaTable.append(None,[self.getFrameProtocols(ProtocolList),0,packetNumber])
+    #     for Protocol in ProtocolList.keys():
+    #         self.FieldAreaTable.append(PacketParent,[Protocol.showname,int(Protocol.size),packetNumber])
+    #     packetNumber +=1
+        # for ProtocolList in PacketsDisplay.values():
+
 
         print("Packets Posted!")
 
     def getFrameProtocols(self,ProtocolList):
         FrameNumber=""
         protocolNames = ""
-        for Proto in ProtocolList:
+        for Proto in ProtocolList.keys():
             if(Proto.name == "frame"):
                 FrameNumber = Proto.showname
                 FrameNumber = FrameNumber.split(':')[0]
                 FrameNumber += ":"
             else:
                 protocolNames += Proto.name + ","
+        protocolNames = protocolNames[:-1]
         return FrameNumber + protocolNames
 
+
+    def filterResults(self,data):
+        # print("ha" + data + " it actually works")
+        self.TableView.set_search_entry(data)
+        print('lol wut')
+
+    def getResults(self, model, column, Data, Rows):
+        row = model[Rows]
+        if Data in list(row)[column-1].lower():
+            return False
+        for inner in row.iterchildren():
+            if Data in list(inner)[column-1].lower():
+                self.TableView.expand_to_path(row.path)
+                break
+        else:
+             self.TableView.collapse_row(row.path)
+        return True # Search does not match
+    # def filterResults(self):
+        # filterToApply =
 
     # def postPackets(self,DataList):
     #     PacketsDisplay = DataList[0]

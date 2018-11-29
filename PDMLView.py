@@ -4,10 +4,10 @@ from gi.repository import Gtk
 
 class PDMLView(Gtk.Box):
 
-    def __init__(self):
+    def __init__(self,main):
 
         Gtk.Box.__init__(self,orientation=Gtk.Orientation.VERTICAL,spacing=0)
-
+        self.main = main
 #Start of PDML View
         mainGrid = Gtk.Grid()
         PDMLFrame = Gtk.Frame()
@@ -15,7 +15,7 @@ class PDMLView(Gtk.Box):
         mainGrid.attach(PDMLBox,1,2,4,1)
         PDMLBox.add(PDMLFrame)
         self.add(mainGrid)
-
+        self.FilterExpression = Gtk.Entry()
     #Title
         # PDMLLabel = Gtk.Label("PDML View")
         # PDMLBox.pack_start(PDMLLabel,True,True,0)
@@ -68,12 +68,14 @@ class PDMLView(Gtk.Box):
         FilterLabel = Gtk.Label("Filter")
         FilterBox.pack_start(FilterLabel,False,True,0)
 
-        FilterExpression = Gtk.Entry()
-        FilterExpression.set_text("Filter Expression")
-        FilterBox.pack_start(FilterExpression,True,True,0)
+
+        self.FilterExpression.set_text("Filter Expression")
+        FilterBox.pack_start(self.FilterExpression,True,True,0)
 
         ApplyButton = Gtk.Button(label="Apply")
         FilterBox.pack_start(ApplyButton,True,True,0)
+
+        ApplyButton.connect("clicked",self.filterApplied)
 
         ClearButton = Gtk.Button(label="Clear")
         FilterBox.pack_start(ClearButton,True,True,0)
@@ -91,10 +93,10 @@ class PDMLView(Gtk.Box):
         filter_store.append(["Filter 3"])
 
         filter_combo = Gtk.ComboBox.new_with_model(filter_store)
-        filter_combo .connect("changed", self.on_name_combo_changed)
+        filter_combo.connect("changed", self.on_name_combo_changed)
         renderer_text = Gtk.CellRendererText()
-        filter_combo .pack_start(renderer_text, True)
-        filter_combo .add_attribute(renderer_text, "text", 0)
+        filter_combo.pack_start(renderer_text, True)
+        filter_combo.add_attribute(renderer_text, "text", 0)
         FilterBox.pack_start(filter_combo , False, False, True)
     #End of filter combobox
 
@@ -110,5 +112,10 @@ class PDMLView(Gtk.Box):
         if tree_iter is not None:
             model = combo.get_model()
             myFilter = model[tree_iter][0]
+
+    def filterApplied(self,widget):
+        filterText = self.FilterExpression.get_text()
+        self.main.filterExpression = self.FilterExpression
+        self.main.callFilter()
 
     #End of PDML View
