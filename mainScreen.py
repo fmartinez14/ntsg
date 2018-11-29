@@ -310,6 +310,8 @@ class LabelWindow(Gtk.Window):
     def callFilter(self):
         self.PacketAreaBox.filterResults(self.filterExpression)
 
+    def deletePacket(self):
+        self.PacketAreaBox.deletePacket()
 
 
 window = LabelWindow()

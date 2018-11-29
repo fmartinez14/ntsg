@@ -55,6 +55,8 @@ class PDMLView(Gtk.Box):
         RemoveButton = Gtk.Button(label="Remove")
         PDMLButtons.pack_start(RemoveButton,True,True,0)
 
+        RemoveButton.connect("clicked",self.deletePacket)
+
         ClearButton = Gtk.Button(label="Clear")
         PDMLButtons.pack_start(ClearButton,True,True,0)
 
@@ -151,6 +153,10 @@ class PDMLView(Gtk.Box):
             self.FilterExpression.set_text(self.Filter2)
         elif(self.myFilter == "Filter 3"):
             self.FilterExpression.set_text(self.Filter3)
+
+
+    def deletePacket(self,widget):
+        self.main.deletePacket()
 
 
 

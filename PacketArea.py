@@ -26,6 +26,10 @@ class PacketArea(Gtk.Box):
         # self.FieldAreaTable = Gtk.ListStore(Gtk.CheckButton,int)
         self.FieldAreaTable = Gtk.TreeStore(str,int,int)
 
+        self.PacketNumber = {}
+        self.PacketsDisplay = {}
+        self.ProtocolsDisplay = {}
+
         ScrollBarPackets  = Gtk.ScrolledWindow(hexpand=True, vexpand=True)
         # ScrollBarPackets.set_border_width(10)
         ScrollBarPackets.set_policy(
@@ -33,7 +37,7 @@ class PacketArea(Gtk.Box):
 
 
 
-        # self.FieldAreaTable.append([False,"Frame 718:frame, eth, ip, tcp",1])
+        # self.FieldAreaTable.append(None,["Frame 1:eth,geninfo,icmpv6,ipv6",0,0])
         # self.FieldAreaTable.append([False,"Frame 767:frame, eth, ip, tcp",2])
         # self.FieldAreaTable.append([False,"Frame 768:frame, eth, ip, tcp",3])
 
@@ -84,25 +88,25 @@ class PacketArea(Gtk.Box):
     #End of Packet area
 
     def postPackets(self,DataList):
-        PacketNumber = DataList[0]
-        PacketsDisplay = DataList[1]
+        self.PacketNumber = DataList[0]
+        self.PacketsDisplay = DataList[1]
         packetNumber = 0
-        ProtocolsDisplay = DataList[2]
+        self.ProtocolsDisplay = DataList[2]
         print("Posting packets..")
 
-        for Packet in PacketNumber.values():
-            PacketParent = self.FieldAreaTable.append(None,[self.getFrameProtocols(PacketsDisplay[Packet]),0,packetNumber])
-            for Protocol in PacketsDisplay[Packet]:
+        for Packet in self.PacketNumber.values():
+            PacketParent = self.FieldAreaTable.append(None,[self.getFrameProtocols(self.PacketsDisplay[Packet]),0,packetNumber])
+            for Protocol in self.PacketsDisplay[Packet]:
                 self.FieldAreaTable.append(PacketParent,[Protocol.showname,int(Protocol.size),packetNumber])
             packetNumber +=1
 
 
-    # for ProtocolList in PacketsDisplay.values():
+    # for ProtocolList in self.PacketsDisplay.values():
     #     PacketParent = self.FieldAreaTable.append(None,[self.getFrameProtocols(ProtocolList),0,packetNumber])
     #     for Protocol in ProtocolList.keys():
     #         self.FieldAreaTable.append(PacketParent,[Protocol.showname,int(Protocol.size),packetNumber])
     #     packetNumber +=1
-        # for ProtocolList in PacketsDisplay.values():
+        # for ProtocolList in self.PacketsDisplay.values():
 
 
         print("Packets Posted!")
@@ -138,15 +142,27 @@ class PacketArea(Gtk.Box):
              self.TableView.collapse_row(row.path)
         return True
 
-        
+    def deletePacket(self):
+        selectedPacket= self.TableView.get_selection()
+        Packet,tupleVal = selectedPacket.get_selected_rows()
+        treeVal = Packet.get_iter(tupleVal)
+        PacketValue = Packet.get_value(treeVal,0)
+        self.FieldAreaTable.remove(treeVal)
+        PacketDelNumber = PacketValue.split(':')[0]
+        PacketDelNumber = PacketDelNumber.split(" ")[1]
+        PacketDelNumber = int(PacketDelNumber)
+        PacketToDelete = self.PacketNumber[PacketDelNumber]
+        self.PacketNumber.pop(PacketDelNumber,None)
+        self.PacketsDisplay.pop(PacketToDelete,None)
+        self.ProtocolsDisplay.pop(PacketToDelete,None)
     # def filterResults(self):
         # filterToApply =
 
     # def postPackets(self,DataList):
-    #     PacketsDisplay = DataList[0]
-    #     ProtocolsDisplay = DataList[1]
+    #     self.PacketsDisplay = DataList[0]
+    #     self.ProtocolsDisplay = DataList[1]
     #     print("Posting packets..")
-    #     for ProtocolList in PacketsDisplay.values():
+    #     for ProtocolList in self.PacketsDisplay.values():
     #         for Protocol,Fields in ProtocolList.items():
     #             protocolParent = self.FieldAreaTable.append(None,[str(Protocol.showname),int(Protocol.size)])
     #             for Field in Fields:
