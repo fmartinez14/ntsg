@@ -24,7 +24,7 @@ class PacketArea(Gtk.Box):
         FieldAreaBox = Gtk.Box()
 
         # self.FieldAreaTable = Gtk.ListStore(Gtk.CheckButton,int)
-        self.FieldAreaTable = Gtk.TreeStore(str,int)
+        self.FieldAreaTable = Gtk.TreeStore(str,int,int)
 
         ScrollBarPackets  = Gtk.ScrolledWindow(hexpand=True, vexpand=True)
         # ScrollBarPackets.set_border_width(10)
@@ -82,14 +82,40 @@ class PacketArea(Gtk.Box):
 
     def postPackets(self,DataList):
         PacketsDisplay = DataList[0]
+        packetNumber = 0
         ProtocolsDisplay = DataList[1]
         print("Posting packets..")
         for ProtocolList in PacketsDisplay.values():
-            for Protocol,Fields in ProtocolList.items():
-                protocolParent = self.FieldAreaTable.append(None,[str(Protocol.showname),int(Protocol.size)])
-                for Field in Fields:
-                    self.FieldAreaTable.append(protocolParent,[Field.showname,int(Field.size)])
+            PacketParent = self.FieldAreaTable.append(None,[self.getFrameProtocols(ProtocolList),0,packetNumber])
+            for Protocol in ProtocolList.keys():
+                self.FieldAreaTable.append(PacketParent,[Protocol.showname,int(Protocol.size),packetNumber])
+            packetNumber +=1
+
         print("Packets Posted!")
+
+    def getFrameProtocols(self,ProtocolList):
+        FrameNumber=""
+        protocolNames = ""
+        for Proto in ProtocolList:
+            if(Proto.name == "frame"):
+                FrameNumber = Proto.showname
+                FrameNumber = FrameNumber.split(':')[0]
+                FrameNumber += ":"
+            else:
+                protocolNames += Proto.name + ","
+        return FrameNumber + protocolNames
+
+
+    # def postPackets(self,DataList):
+    #     PacketsDisplay = DataList[0]
+    #     ProtocolsDisplay = DataList[1]
+    #     print("Posting packets..")
+    #     for ProtocolList in PacketsDisplay.values():
+    #         for Protocol,Fields in ProtocolList.items():
+    #             protocolParent = self.FieldAreaTable.append(None,[str(Protocol.showname),int(Protocol.size)])
+    #             for Field in Fields:
+    #                 self.FieldAreaTable.append(protocolParent,[Field.showname,int(Field.size)])
+    #     print("Packets Posted!")
 
     def on_cell_toggled(self, widget, path):
         self.FieldAreaTable[path][0] = not self.FieldAreaTable[path][0]

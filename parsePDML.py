@@ -43,7 +43,6 @@ def makePackets(fileName): #Creates a Packet Dictionary object, where the keys a
 
     # create empty list for objects
     Packets = {}
-
     for item in root.findall('packet'):
         TemporaryPacket = Packet(item.attrib)
         Packets[TemporaryPacket] = None
@@ -61,6 +60,8 @@ def makePackets(fileName): #Creates a Packet Dictionary object, where the keys a
 
     ListMe = [Packets,Protocols]
     return ListMe
+
+
 
 def printPackets(Packets,Protocols): #Prints the resulting packet/protocol/field name.
     for key,value in Packets.iteritems():
