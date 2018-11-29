@@ -147,14 +147,18 @@ class PacketArea(Gtk.Box):
         Packet,tupleVal = selectedPacket.get_selected_rows()
         treeVal = Packet.get_iter(tupleVal)
         PacketValue = Packet.get_value(treeVal,0)
-        self.FieldAreaTable.remove(treeVal)
-        PacketDelNumber = PacketValue.split(':')[0]
-        PacketDelNumber = PacketDelNumber.split(" ")[1]
-        PacketDelNumber = int(PacketDelNumber)
-        PacketToDelete = self.PacketNumber[PacketDelNumber]
-        self.PacketNumber.pop(PacketDelNumber,None)
-        self.PacketsDisplay.pop(PacketToDelete,None)
-        self.ProtocolsDisplay.pop(PacketToDelete,None)
+        CheckPacket = PacketValue.split(':')[0]
+        CheckFrame = PacketValue.split(" ")
+        print(CheckFrame)
+        if(CheckFrame[0] == "Frame"):
+            self.FieldAreaTable.remove(treeVal)
+            PacketDelNumber = PacketValue.split(':')[0]
+            PacketDelNumber = PacketDelNumber.split(" ")[1]
+            PacketDelNumber = int(PacketDelNumber)
+            PacketToDelete = self.PacketNumber[PacketDelNumber]
+            self.PacketNumber.pop(PacketDelNumber,None)
+            self.PacketsDisplay.pop(PacketToDelete,None)
+            self.ProtocolsDisplay.pop(PacketToDelete,None)
     # def filterResults(self):
         # filterToApply =
 
