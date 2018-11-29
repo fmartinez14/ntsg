@@ -16,15 +16,15 @@ class PacketArea(Gtk.Box):
         PDMLBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         PDMLBox.pack_start(PacketLabelBox,True,True,0)
 
-        PacketBox = Gtk.Box(spacing=5)
+        PacketBox = Gtk.Box(spacing=0)
 
         PacketLabel = Gtk.Label("Packet")
         PacketBox.pack_start(PacketLabel,True,True,0)
 
         FieldAreaBox = Gtk.Box()
 
-        self.FieldAreaTable = Gtk.ListStore(Gtk.CheckButton,int)
-        self.FieldAreaTable = Gtk.ListStore(bool,str,int)
+        # self.FieldAreaTable = Gtk.ListStore(Gtk.CheckButton,int)
+        self.FieldAreaTable = Gtk.TreeStore(str,int)
 
         ScrollBarPackets  = Gtk.ScrolledWindow(hexpand=True, vexpand=True)
         # ScrollBarPackets.set_border_width(10)
@@ -42,21 +42,21 @@ class PacketArea(Gtk.Box):
         FieldAreaFrame= Gtk.Frame()
         FieldAreaBox.add(FieldAreaFrame)
 
-        TableBox = Gtk.Box(spacing=5)
+        TableBox = Gtk.Box(spacing=0)
 
-        renderer_toggle = Gtk.CellRendererToggle()
-        renderer_toggle.connect("toggled", self.on_cell_toggled)
-        column_toggle = Gtk.TreeViewColumn("", renderer_toggle, active=0)
-        TableView.append_column(column_toggle)
+        # renderer_toggle = Gtk.CellRendererToggle()
+        # renderer_toggle.connect("toggled", self.on_cell_toggled)
+        # column_toggle = Gtk.TreeViewColumn("", renderer_toggle, active=0)
+        # TableView.append_column(column_toggle)
 
         Render_Name = Gtk.CellRendererText()
-        FirstColumn = Gtk.TreeViewColumn("Package Name",Render_Name,text=1)
+        FirstColumn = Gtk.TreeViewColumn("Package Name",Render_Name,text=0)
         TableView.append_column(FirstColumn)
 
         Render_Showname= Gtk.CellRendererText()
         Render_Showname.set_property("editable",True)
         # Render_Showname.connect("edited",self.showName_edited)
-        SecondColumn = Gtk.TreeViewColumn("Size",Render_Showname,text=2)
+        SecondColumn = Gtk.TreeViewColumn("Size",Render_Showname,text=1)
         TableView.append_column(SecondColumn)
 
         ScrollBarPackets.add_with_viewport(TableView)
@@ -85,9 +85,10 @@ class PacketArea(Gtk.Box):
         ProtocolsDisplay = DataList[1]
         print("Posting packets..")
         for ProtocolList in PacketsDisplay.values():
-            for Protocol in ProtocolList.keys():
-
-                self.FieldAreaTable.append([False,str(Protocol.showname),int(Protocol.size)])
+            for Protocol,Fields in ProtocolList.items():
+                protocolParent = self.FieldAreaTable.append(None,[str(Protocol.showname),int(Protocol.size)])
+                for Field in Fields:
+                    self.FieldAreaTable.append(protocolParent,[Field.showname,int(Field.size)])
         print("Packets Posted!")
 
     def on_cell_toggled(self, widget, path):

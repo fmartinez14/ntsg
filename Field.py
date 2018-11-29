@@ -5,6 +5,8 @@ Description: A location in a data structure that is used to store data.
 
 class Field:
     def __init__(self,data):
+        self.showname= ""
+        self.size=0
         for attribute in data:
             setattr(self, attribute, data[attribute])
         # self.FieldName = data[0]
