@@ -113,6 +113,12 @@ class stateMachine:
 		self.numNodes = 0
 		self.graph = pydot.Dot(graph_type='digraph', rankdir = "LR")
 		self.node = []
+		self.messageTypes = []
+
+	def calcNumNodes(self):
+		#self.messageTypes = messageType.getMessageType()
+		#return len(messageTypes)
+		return 4
 
 	def createMachine(self):
 		self.graph = pydot.Dot(graph_type='digraph', rankdir = "LR")
@@ -128,8 +134,6 @@ class stateMachine:
 		for i in range(self.numNodes):
 			if(i < (self.numNodes-1)):
 				self.graph.add_edge(pydot.Edge(self.node[i], self.node[i+1]))
-			else:
-				self.graph.add_edge(pydot.Edge(self.node[i], self.node[0]))
 
 
 		self.graph.write_png('stateMachine.png')
@@ -144,7 +148,7 @@ class stateMachine:
 		self.graph.write_png('stateMachine.png')
 
 machine = stateMachine()
-machine.numNodes = 4
+machine.numNodes = machine.calcNumNodes()
 machine.createMachine()
 
 window = stateMachineWindow()
