@@ -8,8 +8,8 @@ class stateMachineWindow(Gtk.Window):
     def __init__(self):
 
     	#set adjustment for spin buttons
-    	ad = Gtk.Adjustment(0, 0, 100, 1, 0, 0)
-    	bc = Gtk.Adjustment(0, 0, 100, 1, 0, 0)
+    	ad = Gtk.Adjustment(0, 0, (machine.numNodes - 1), 1, 0, 0)
+    	bc = Gtk.Adjustment(0, 0, (machine.numNodes - 1), 1, 0, 0)
 
         Gtk.Window.__init__(self, title="Network Traffic Based Software Generation - State Machine")
 
@@ -57,12 +57,10 @@ class stateMachineWindow(Gtk.Window):
 
         sourceLabel = Gtk.Label("Source", xalign=0)
         vbox.pack_start(sourceLabel, False, True, 0)
-
-        sourceEntry = Gtk.SpinButton(adjustment=ad, climb_rate=1, digits=0)
+        self.sourceEntry = Gtk.SpinButton(adjustment=ad, climb_rate=1, digits=0)
         #sourceEntry.set_hexpand(True)
-        self.source = (sourceEntry.get_value_as_int())
-        sourceEntry.props.valign = Gtk.Align.CENTER
-        hbox.pack_start(sourceEntry, True, True, 0)
+        self.sourceEntry.props.valign = Gtk.Align.CENTER
+        hbox.pack_start(self.sourceEntry, True, True, 0)
 
         listbox.add(row)
 
@@ -71,11 +69,10 @@ class stateMachineWindow(Gtk.Window):
         hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=50)
         row.add(hbox)
         destinationlabel = Gtk.Label("Destination", xalign=0)
-        destinationEntry = Gtk.SpinButton(adjustment=bc, climb_rate=1, digits=0)
+        self.destinationEntry = Gtk.SpinButton(adjustment=bc, climb_rate=1, digits=0)
         #destinationEntry.set_hexpand(True)
-       	self.destination = (destinationEntry.get_value_as_int())
         hbox.pack_start(destinationlabel, False, True, 0)
-        hbox.pack_start(destinationEntry, True, True, 0)
+        hbox.pack_start(self.destinationEntry, True, True, 0)
 
         listbox.add(row)
 
@@ -96,12 +93,18 @@ class stateMachineWindow(Gtk.Window):
         listbox.add(row)
 
     def addClicked(self, widget):
+    	self.source = (self.sourceEntry.get_value_as_int())
+    	self.destination = (self.destinationEntry.get_value_as_int())
      	machine.addEdge(self.source, self.destination)
      	self.img.clear()
      	self.img.set_from_file("stateMachine.png")
 
     def deleteClicked(self, widget):
+    	self.source = (self.sourceEntry.get_value_as_int())
+    	self.destination = (self.destinationEntry.get_value_as_int())
     	machine.deleteEdge(self.source, self.destination)
+    	self.img.clear()
+     	self.img.set_from_file("stateMachine.png")
 
 
 class stateMachine:
