@@ -7,6 +7,7 @@ class stateMachineWindow(Gtk.Window):
 
     def __init__(self):
 
+    	#set adjustment for spin buttons
     	ad = Gtk.Adjustment(0, 0, 100, 1, 0, 0)
     	bc = Gtk.Adjustment(0, 0, 100, 1, 0, 0)
 
@@ -32,20 +33,22 @@ class stateMachineWindow(Gtk.Window):
 
         listbox.add(row)
 
+        #start packing box with image
         row = Gtk.ListBoxRow()
         hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=50)
         row.add(hbox)
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         hbox.pack_start(vbox, True, True, 0)
 
-        img = Gtk.Image()
-        img.set_from_file("stateMachine.png")
-        self.add(img)
+        self.img = Gtk.Image()
+        self.img.set_from_file("stateMachine.png")
+        self.add(self.img)
 
-        vbox.pack_start(img, False, True, 0)
+        vbox.pack_start(self.img, False, True, 0)
 
         listbox.add(row)
 
+        #start packing box with source spin button
         row = Gtk.ListBoxRow()
         hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=50)
         row.add(hbox)
@@ -56,36 +59,27 @@ class stateMachineWindow(Gtk.Window):
         vbox.pack_start(sourceLabel, False, True, 0)
 
         sourceEntry = Gtk.SpinButton(adjustment=ad, climb_rate=1, digits=0)
-        sourceEntry.set_hexpand(True)
-        self.source = sourceEntry.get_value_as_int()
-        #sourceEntry.set_text(self.source)
+        #sourceEntry.set_hexpand(True)
+        self.source = (sourceEntry.get_value_as_int())
         sourceEntry.props.valign = Gtk.Align.CENTER
         hbox.pack_start(sourceEntry, True, True, 0)
 
         listbox.add(row)
 
+        #start packing box with destination spin button
         row = Gtk.ListBoxRow()
         hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=50)
         row.add(hbox)
         destinationlabel = Gtk.Label("Destination", xalign=0)
         destinationEntry = Gtk.SpinButton(adjustment=bc, climb_rate=1, digits=0)
-        destinationEntry.set_hexpand(True)
-       	self.destination = destinationEntry.get_value_as_int()
-        #destinationEntry.set_text(self.destination)
+        #destinationEntry.set_hexpand(True)
+       	self.destination = (destinationEntry.get_value_as_int())
         hbox.pack_start(destinationlabel, False, True, 0)
         hbox.pack_start(destinationEntry, True, True, 0)
 
         listbox.add(row)
 
-        """row = Gtk.ListBoxRow()
-        hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=50)
-        row.add(hbox)
-        machineDescriptionlabel = Gtk.Label("Destination", xalign=0)
-        machineDescriptionEntry = Gtk.Entry()
-        hbox.pack_start(machineDescriptionlabel, False, True, 0)
-        hbox.pack_start(machineDescriptionEntry, True, True, 0)
-
-        listbox.add(row)"""
+        #start packing box with create and delete buttons
 
         row = Gtk.ListBoxRow()
         hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing = 50)
@@ -93,13 +87,21 @@ class stateMachineWindow(Gtk.Window):
         createButton = Gtk.Button(label="Create")
         deleteButton = Gtk.Button(label="Delete")
 
-        createButton.connect("clicked", lambda: stateMachine.addEdge(machine, self.source, self.destination))
-        deleteButton.connect("clicked", lambda: stateMachine.deleteEdge(machine, self.source, self.destination))
+        createButton.connect("clicked", self.addClicked)
+        deleteButton.connect("clicked", self.deleteClicked)
 
         hbox.pack_start(createButton, True, True, 0)
         hbox.pack_start(deleteButton, True, True, 0)
 
         listbox.add(row)
+
+    def addClicked(self, widget):
+     	machine.addEdge(self.source, self.destination)
+     	self.img.clear()
+     	self.img.set_from_file("stateMachine.png")
+
+    def deleteClicked(self, widget):
+    	machine.deleteEdge(self.source, self.destination)
 
 
 class stateMachine:
@@ -117,7 +119,7 @@ class stateMachine:
 		self.node = []
 
 		for i in range(self.numNodes):
-			self.node.append(pydot.Node("Node %d" % (i+1), rank="same"))
+			self.node.append(pydot.Node("Node %d" % (i), rank="same"))
 			self.graph.add_node(self.node[i])
 
 		for i in range(self.numNodes):
@@ -129,21 +131,14 @@ class stateMachine:
 
 		self.graph.write_png('stateMachine.png')
 
-	def deleteEdge(self, x, y):
-		self.graph.del_edge(self.node[x], self.node[y])
+	def deleteEdge(self, source, destination):
+		self.graph.del_edge(self.node[source], self.node[destination])
 		self.graph.write_png('stateMachine.png')
 
-	def addEdge(self, x, y):
-		self.graph.add_edge(pydot.Edge(self.node[x], self.node[y]))
+	def addEdge(self, source, destination):	
+		print(source, destination)	
+		self.graph.add_edge(pydot.Edge(self.node[source], self.node[destination]))
 		self.graph.write_png('stateMachine.png')
-
-	"""def editEdge(self, x, y, z):
-		x = int(float(x))
-		y = int(float(y))
-		z = int(float(z))
-		self.graph.del_edge(self.node[x], self.node[y])
-		self.graph.add_edge(pydot.Edge(self.node[x], self.node[z]))
-		self.graph.write_png('stateMachine.png')"""
 
 machine = stateMachine()
 machine.numNodes = 4
