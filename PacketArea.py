@@ -11,6 +11,7 @@ class PacketArea(Gtk.Box):
     #Start of Packet area
         PacketLabelBox = Gtk.Box(spacing=0)
         PacketAreaLabel = Gtk.Label("Packet Area")
+        self.pack_start(PacketAreaLabel, False, False, 0)
         # PacketLabelBox.pack_start(PacketAreaLabel,False,False,0)
         self.main = main
         PDMLBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
@@ -73,16 +74,23 @@ class PacketArea(Gtk.Box):
         TableBox.pack_start(self.TableView,False,False,0)
         FieldAreaBox.pack_start(TableBox,False,False,0)
 
+        buttonRow = Gtk.ListBoxRow()
+        button = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        buttonRow.add(button)
 
         RemoveButton = Gtk.Button(label="Remove")
-        TableBox.pack_start(RemoveButton,True,True,0)
+        #TableBox.pack_start(RemoveButton,True,True,0)
 
         ClearButton = Gtk.Button(label="Clear")
-        TableBox.pack_start(ClearButton,True,True,0)
+        #TableBox.pack_start(ClearButton,True,True,0)
+
+        button.pack_start(RemoveButton, True, True, 0)
+        button.pack_start(ClearButton, True, True, 0)
 
         PDMLBox.pack_start(ScrollBarPackets,True,True,0)
         # PDMLBox.pack_start(TableBox,True,False,4)
         self.add(PDMLBox)
+        self.add(buttonRow)
 
         # PDMLBox.pack_start(TableBox,True,False,4)
     #End of Packet area
