@@ -48,8 +48,11 @@ class LabelWindow(Gtk.Window):
         HeaderButtons = HeaderBox._buttons
 
         HeaderButtons[5].connect("clicked", HeaderBox.Terminal_clicked)
+        HeaderButtons[4].connect("clicked", HeaderBox.PCAP_clicked)
+        HeaderButtons[3].connect("clicked", HeaderBox.Workspace_clicked)
+        HeaderButtons[2].connect("clicked", HeaderBox.OpenSession_clicked)
         HeaderButtons[1].connect("clicked", HeaderBox.OpenSession_clicked)
-        HeaderButtons[4].connect("clicked",HeaderBox.PCAP_clicked)
+        HeaderButtons[0].connect("clicked", HeaderBox.NewSession_clicked)
 
 
         mainGrid.attach(HeaderBox,0,0,4,1)
