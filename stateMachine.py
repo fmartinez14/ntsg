@@ -7,9 +7,9 @@ class stateMachineWindow(Gtk.Window):
 
     def __init__(self):
 
-    	#set adjustment for spin buttons
-    	ad = Gtk.Adjustment(0, 0, (machine.numNodes - 1), 1, 0, 0)
-    	bc = Gtk.Adjustment(0, 0, (machine.numNodes - 1), 1, 0, 0)
+        #set adjustment for spin buttons
+        ad = Gtk.Adjustment(0, 0, (machine.numNodes - 1), 1, 0, 0)
+        bc = Gtk.Adjustment(0, 0, (machine.numNodes - 1), 1, 0, 0)
 
         Gtk.Window.__init__(self, title="Network Traffic Based Software Generation - State Machine")
 
@@ -93,59 +93,97 @@ class stateMachineWindow(Gtk.Window):
         listbox.add(row)
 
     def addClicked(self, widget):
-    	self.source = (self.sourceEntry.get_value_as_int())
-    	self.destination = (self.destinationEntry.get_value_as_int())
-     	machine.addEdge(self.source, self.destination)
-     	self.img.clear()
-     	self.img.set_from_file("stateMachine.png")
+        self.source = (self.sourceEntry.get_value_as_int())
+        self.destination = (self.destinationEntry.get_value_as_int())
+        machine.addEdge(self.source, self.destination)
+        self.img.clear()
+        self.img.set_from_file("stateMachine.png")
 
     def deleteClicked(self, widget):
-    	self.source = (self.sourceEntry.get_value_as_int())
-    	self.destination = (self.destinationEntry.get_value_as_int())
-    	machine.deleteEdge(self.source, self.destination)
-    	self.img.clear()
-     	self.img.set_from_file("stateMachine.png")
+        self.source = (self.sourceEntry.get_value_as_int())
+        self.destination = (self.destinationEntry.get_value_as_int())
+        machine.deleteEdge(self.source, self.destination)
+        self.img.clear()
+        self.img.set_from_file("stateMachine.png")
+
+class transition():
+
+    def __init__(self):
+        self.source = 0
+        self.destination = 0
+
+    def setSource(self, source):
+        self.source = source
+
+    def setDest(self, destination):
+        self.destination = destination
+
+    def createTransition(self, source, destination):
+        self.setSource(source)
+        self.setDest(destination)
+        return self
 
 
 class stateMachine:
 
-	def __init(self):
-		self.numNodes = 0
-		self.graph = pydot.Dot(graph_type='digraph', rankdir = "LR")
-		self.node = []
-		self.messageTypes = []
-
-	def calcNumNodes(self):
-		#self.messageTypes = messageType.getMessageType()
-		#return len(messageTypes)
-		return 4
-
-	def createMachine(self):
-		self.graph = pydot.Dot(graph_type='digraph', rankdir = "LR")
-
-		graphlegend = pydot.Cluster(graph_name="NTSG", label="NTSG", rankdir="TB")
-
-		self.node = []
-
-		for i in range(self.numNodes):
-			self.node.append(pydot.Node("Node %d" % (i), rank="same"))
-			self.graph.add_node(self.node[i])
-
-		for i in range(self.numNodes):
-			if(i < (self.numNodes-1)):
-				self.graph.add_edge(pydot.Edge(self.node[i], self.node[i+1]))
+    def __init__(self):
+        self.numNodes = 0
+        self.graph = pydot.Dot(graph_type='digraph', rankdir = "LR")
+        self.node = []
+        self.messageTypes = []
+        self.automata = []
+        self.transitions = []
 
 
-		self.graph.write_png('stateMachine.png')
+    #def calcNumNodes(self, messageTypes):
+    def calcNumNodes(self):
+        #return len(messageTypes)
+        return 4
 
-	def deleteEdge(self, source, destination):
-		self.graph.del_edge(self.node[source], self.node[destination])
-		self.graph.write_png('stateMachine.png')
+    def initializeMachine(self, messageType):
+        self.MessageTypes = messageType
+        self.numNodes = calcNumNodes(messageTypes)
 
-	def addEdge(self, source, destination):	
-		print(source, destination)	
-		self.graph.add_edge(pydot.Edge(self.node[source], self.node[destination]))
-		self.graph.write_png('stateMachine.png')
+        return self.automata
+
+    def createMachine(self):
+        self.graph = pydot.Dot(graph_type='digraph', rankdir = "LR")
+
+        graphlegend = pydot.Cluster(graph_name="NTSG", label="NTSG", rankdir="TB")
+
+        self.node = []
+
+
+        for i in range(self.numNodes):
+            #self.node.append(pydot.Node("Node %d" % (i) + " : " + messageTypes[i].name, rank="same"))
+            self.node.append(pydot.Node("Node %d" % (i), rank="same"))
+            self.graph.add_node(self.node[i])
+
+        for i in range(self.numNodes):
+            if(i < (self.numNodes-1)):
+                #draw the initial edges
+                self.graph.add_edge(pydot.Edge(self.node[i], self.node[i+1]))
+                #create a transition and append it to the list
+                
+                self.transitions.append(transition().createTransition(i, (i+1)))
+
+
+        self.graph.write_png('stateMachine.png')
+
+    def deleteEdge(self, source, destination):
+        self.graph.del_edge(self.node[source], self.node[destination])
+        self.graph.write_png('stateMachine.png')
+
+    def addEdge(self, source, destination):
+        edgeExists = False
+        i = 0  
+        while i < len(self.transitions):
+            if(self.transitions[i].source==source and self.transitions[i].destination==destination):
+                edgeExists = True
+            i+=1
+        if(edgeExists==False):
+            self.graph.add_edge(pydot.Edge(self.node[source], self.node[destination]))
+            self.graph.write_png('stateMachine.png')
 
 machine = stateMachine()
 machine.numNodes = machine.calcNumNodes()
