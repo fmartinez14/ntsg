@@ -171,8 +171,19 @@ class stateMachine:
         self.graph.write_png('stateMachine.png')
 
     def deleteEdge(self, source, destination):
-        self.graph.del_edge(self.node[source], self.node[destination])
-        self.graph.write_png('stateMachine.png')
+        edgeExists = False
+        i = 0
+        while i < len(self.transitions):
+            if(self.transitions[i].source==source and self.transitions[i].destination==destination):
+                edgeExists = True
+                break
+            i+=1
+        if(edgeExists==True):
+            self.graph.del_edge(self.node[source], self.node[destination])
+            self.graph.write_png('stateMachine.png')
+            del self.transitions[i]
+        else:
+            print("Edge from " + str(source) + " to " + str(destination) + " doesn't exists.")
 
     def addEdge(self, source, destination):
         edgeExists = False
@@ -184,6 +195,7 @@ class stateMachine:
         if(edgeExists==False):
             self.graph.add_edge(pydot.Edge(self.node[source], self.node[destination]))
             self.graph.write_png('stateMachine.png')
+            self.transitions.append(transition().createTransition(source, destination))
         else:
             print("Edge from " + str(source) + " to " + str(destination) + " already exists.")
 
