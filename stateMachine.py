@@ -184,6 +184,8 @@ class stateMachine:
         if(edgeExists==False):
             self.graph.add_edge(pydot.Edge(self.node[source], self.node[destination]))
             self.graph.write_png('stateMachine.png')
+        else:
+            print("Edge from " + str(source) + " to " + str(destination) + " already exists.")
 
 machine = stateMachine()
 machine.numNodes = machine.calcNumNodes()
