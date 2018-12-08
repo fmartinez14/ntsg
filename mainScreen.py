@@ -316,6 +316,9 @@ class LabelWindow(Gtk.Window):
     def deletePacket(self):
         self.PacketAreaBox.deletePacket()
 
+    def clearFilter(self):
+        self.PacketAreaBox.clearFilter()
+
     def clearPackets(self):
         self.PacketAreaBox.clearPackets()
 

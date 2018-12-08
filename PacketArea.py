@@ -1,5 +1,6 @@
 import gi
 import Protocol
+import re
 gi.require_version('Gtk','3.0')
 from gi.repository import Gtk
 
@@ -135,8 +136,8 @@ class PacketArea(Gtk.Box):
 
     def filterResults(self,data):
         # print("ha" + data + " it actually works")
-        self.TableView.set_search_entry(data)
-        print('lol wut')
+        # self.TableView.set_search_entry(data)
+        self.improvedSearch(data)
 
     def getResults(self, model, column, Data, Rows):
         row = model[Rows]
@@ -169,8 +170,47 @@ class PacketArea(Gtk.Box):
             self.ProtocolsDisplay.pop(PacketToDelete,None)
 
 
+    def improvedSearch(self,filterValue):
+        data = filterValue.get_text()
+        self.FieldAreaTable.clear()
+        packetAttached = False
+        packetNumber = 0
+        for Packet in self.PacketNumber.values():
+            packetAttached = False
+            for Protocol in self.PacketsDisplay[Packet]:
+                for key,value in Protocol.__dict__.items():
+                        if(re.search(str(data),str(key)) or re.search(str(data),str(value))):
+                            PacketParent = self.FieldAreaTable.append(None,[self.getFrameProtocols(self.PacketsDisplay[Packet]),0,packetNumber])
+                            self.FieldAreaTable.append(PacketParent,[Protocol.showname,int(Protocol.size),packetNumber])
+                            packetAttached = True
+                            break
+                        for Field in self.ProtocolsDisplay[Protocol]:
+                            if(packetAttached == False):
+                                for key,value in Field.__dict__.items():
+                                    if(re.search(str(data),str(key)) or re.search(str(data),str(value))):
+                                        print("Found a match")
+                                        PacketParent = self.FieldAreaTable.append(None,[self.getFrameProtocols(self.PacketsDisplay[Packet]),0,packetNumber])
+                                        self.FieldAreaTable.append(PacketParent,[Protocol.showname,int(Protocol.size),packetNumber])
+                                        packetAttached = True
+                                        break
+
+            packetNumber +=1
+
+
+
     def clearPackets(self):
         self.FieldAreaTable.clear()
+
+    def clearFilter(self):
+        packetNumber=0
+        self.FieldAreaTable.clear()
+        for Packet in self.PacketNumber.values():
+            PacketParent = self.FieldAreaTable.append(None,[self.getFrameProtocols(self.PacketsDisplay[Packet]),0,packetNumber])
+            for Protocol in self.PacketsDisplay[Packet]:
+                self.FieldAreaTable.append(PacketParent,[Protocol.showname,int(Protocol.size),packetNumber])
+            packetNumber += 1
+
+
     # def filterResults(self):
         # filterToApply =
 

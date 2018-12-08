@@ -136,6 +136,7 @@ class PDMLView(Gtk.Box):
 
     def clearFilter(self,widget):
         self.FilterExpression.set_text("")
+        self.main.clearFilter()
 
     def saveFilter(self,widget):
         filterText = self.FilterExpression.get_text()
