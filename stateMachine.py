@@ -185,19 +185,25 @@ class stateMachine:
         else:
             print("Edge from " + str(source) + " to " + str(destination) + " doesn't exists.")
 
-    def addEdge(self, source, destination):
-        edgeExists = False
+def addEdge(self, source, destination):
         i = 0  
+        if(source==destination):
+            print("Nodes can't connect to themselves")
+            return
         while i < len(self.transitions):
             if(self.transitions[i].source==source and self.transitions[i].destination==destination):
-                edgeExists = True
+                print("Edge from " + str(source) + " to " + str(destination) + " already exists.")
+                return
+            if(self.transitions[i].destination==destination):
+                print("Node " + str(destination) + " already is reached by " + str(self.transitions[i].source) + ".")
+                return
+            if(self.transitions[i].source==source):
+                print("Node " + str(source) + " cannot have multiple edges out.")
+                return
             i+=1
-        if(edgeExists==False):
-            self.graph.add_edge(pydot.Edge(self.node[source], self.node[destination]))
-            self.graph.write_png('stateMachine.png')
-            self.transitions.append(transition().createTransition(source, destination))
-        else:
-            print("Edge from " + str(source) + " to " + str(destination) + " already exists.")
+        self.graph.add_edge(pydot.Edge(self.node[source], self.node[destination]))
+        self.graph.write_png('stateMachine.png')
+        self.transitions.append(transition().createTransition(source, destination))
 
 machine = stateMachine()
 machine.numNodes = machine.calcNumNodes()
