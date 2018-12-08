@@ -240,8 +240,3 @@ class stateMachine:
 machine = stateMachine()
 machine.numNodes = machine.calcNumNodes()
 machine.createMachine()
-
-window = stateMachineWindow()
-window.connect("destroy", Gtk.main_quit)
-window.show_all()
-Gtk.main()
