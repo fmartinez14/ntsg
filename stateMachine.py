@@ -147,6 +147,7 @@ class stateMachine:
     def initializeMachine(self, messageType):
         self.messageTypes = messageType
         self.numNodes = self.calcNumNodes()
+        self.createMachine()
 
     def createMachine(self):
         self.graph = pydot.Dot(graph_type='digraph', rankdir = "LR")
@@ -232,4 +233,3 @@ class stateMachine:
 machine = stateMachine()
 temp = ["A","B", "C", "D" , "E"]
 machine.initializeMachine(temp)
-machine.createMachine()
