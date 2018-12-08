@@ -83,12 +83,15 @@ class stateMachineWindow(Gtk.Window):
         row.add(hbox)
         createButton = Gtk.Button(label="Create")
         deleteButton = Gtk.Button(label="Delete")
+        saveButton = Gtk.Button(label="Save")
 
         createButton.connect("clicked", self.addClicked)
         deleteButton.connect("clicked", self.deleteClicked)
+        saveButton.connect("clicked", self.saveClicked)
 
         hbox.pack_start(createButton, True, True, 0)
         hbox.pack_start(deleteButton, True, True, 0)
+        hbox.pack_start(saveButton, True, True, 0)
 
         listbox.add(row)
 
@@ -105,6 +108,10 @@ class stateMachineWindow(Gtk.Window):
         machine.deleteEdge(self.source, self.destination)
         self.img.clear()
         self.img.set_from_file("stateMachine.png")
+
+    def saveClicked(self, widget):
+        machine.sortMachine()
+        for p in machine.messageTypes: print p
 
 class transition():
 
@@ -203,8 +210,6 @@ class stateMachine:
         self.graph.add_edge(pydot.Edge(self.node[source], self.node[destination]))
         self.graph.write_png('stateMachine.png')
         self.transitions.append(transition().createTransition(source, destination))
-        self.sortMachine()
-        for p in self.messageTypes: print p
 
     def sortMachine(self):
         i = 0
