@@ -114,7 +114,7 @@ class stateMachineWindow(Gtk.Window):
         for p in machine.messageTypes: print p
 
 class transition():
-
+    #transition class, contains information about how the messageType moves thru the state machine
     def __init__(self):
         self.source = 0
         self.destination = 0
@@ -132,7 +132,7 @@ class transition():
 
 
 class stateMachine:
-
+    #State Machine class represents the flow of data from message type
     def __init__(self):
         self.numNodes = 0
         self.graph = pydot.Dot(graph_type='digraph', rankdir = "LR")
@@ -141,15 +141,18 @@ class stateMachine:
         self.transitions = []
 
     def calcNumNodes(self):
+        #calculates the number of nodes needed for the state machine
         return len(self.messageTypes)
         #return 4
 
     def initializeMachine(self, messageType):
+        #to be called by the GUI to instantiate the state machine
         self.messageTypes = messageType
         self.numNodes = self.calcNumNodes()
         self.createMachine()
 
     def createMachine(self):
+        #creates the initial version of the state machine
         self.graph = pydot.Dot(graph_type='digraph', rankdir = "LR")
 
         graphlegend = pydot.Cluster(graph_name="NTSG", label="NTSG", rankdir="TB")
@@ -173,6 +176,7 @@ class stateMachine:
         self.graph.write_png('stateMachine.png')
 
     def deleteEdge(self, source, destination):
+        #deletes an edge only if that edge exists
         edgeExists = False
         i = 0
         while i < len(self.transitions):
@@ -188,6 +192,7 @@ class stateMachine:
             print("Edge from " + str(source) + " to " + str(destination) + " doesn't exists.")
 
     def addEdge(self, source, destination):
+        #adds an edge only if that edge doesn't exist AND if that node doesn't already have an edge going the same direction into/out of it
         i = 0  
         if(source==destination):
             print("Nodes can't connect to themselves")
@@ -208,6 +213,7 @@ class stateMachine:
         self.transitions.append(transition().createTransition(source, destination))
 
     def sortMachine(self):
+        #sorts the state machine as the analyst desired
         i = 0
         lastSource = 0
         lastDest = 0
