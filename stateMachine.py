@@ -137,21 +137,16 @@ class stateMachine:
         self.numNodes = 0
         self.graph = pydot.Dot(graph_type='digraph', rankdir = "LR")
         self.node = []
-        self.messageTypes = ["A","B", "C", "D" , "E"]
-        self.automata = []
+        self.messageTypes = []
         self.transitions = []
 
-
-    #def calcNumNodes(self, messageTypes):
     def calcNumNodes(self):
         return len(self.messageTypes)
         #return 4
 
     def initializeMachine(self, messageType):
-        self.MessageTypes = []
-        self.numNodes = calcNumNodes(messageTypes)
-
-        return self.automata
+        self.messageTypes = messageType
+        self.numNodes = self.calcNumNodes()
 
     def createMachine(self):
         self.graph = pydot.Dot(graph_type='digraph', rankdir = "LR")
@@ -234,9 +229,7 @@ class stateMachine:
                 i=0
             i+=1
 
-
-            
-
 machine = stateMachine()
-machine.numNodes = machine.calcNumNodes()
+temp = ["A","B", "C", "D" , "E"]
+machine.initializeMachine(temp)
 machine.createMachine()
