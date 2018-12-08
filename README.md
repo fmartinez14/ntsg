@@ -5,6 +5,8 @@ Software Engineering 2: Team Kobra
 
 Network Traffic 
 
-Required Libraries
+#Required Libraries
+
 pip install pydot
+
 sudo apt-get install graphviz
