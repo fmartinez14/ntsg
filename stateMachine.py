@@ -130,18 +130,18 @@ class stateMachine:
         self.numNodes = 0
         self.graph = pydot.Dot(graph_type='digraph', rankdir = "LR")
         self.node = []
-        self.messageTypes = []
+        self.messageTypes = ["A","B", "C", "D" , "E"]
         self.automata = []
         self.transitions = []
 
 
     #def calcNumNodes(self, messageTypes):
     def calcNumNodes(self):
-        #return len(messageTypes)
-        return 4
+        return len(self.messageTypes)
+        #return 4
 
     def initializeMachine(self, messageType):
-        self.MessageTypes = messageType
+        self.MessageTypes = []
         self.numNodes = calcNumNodes(messageTypes)
 
         return self.automata
@@ -152,7 +152,6 @@ class stateMachine:
         graphlegend = pydot.Cluster(graph_name="NTSG", label="NTSG", rankdir="TB")
 
         self.node = []
-
 
         for i in range(self.numNodes):
             #self.node.append(pydot.Node("Node %d" % (i) + " : " + messageTypes[i].name, rank="same"))
@@ -185,7 +184,7 @@ class stateMachine:
         else:
             print("Edge from " + str(source) + " to " + str(destination) + " doesn't exists.")
 
-def addEdge(self, source, destination):
+    def addEdge(self, source, destination):
         i = 0  
         if(source==destination):
             print("Nodes can't connect to themselves")
@@ -204,6 +203,34 @@ def addEdge(self, source, destination):
         self.graph.add_edge(pydot.Edge(self.node[source], self.node[destination]))
         self.graph.write_png('stateMachine.png')
         self.transitions.append(transition().createTransition(source, destination))
+        self.sortMachine()
+        for p in self.messageTypes: print p
+
+    def sortMachine(self):
+        i = 0
+        lastSource = 0
+        lastDest = 0
+        temp = []
+        temp.append(self.messageTypes[self.transitions[0].source])
+        temp.append(self.messageTypes[self.transitions[0].destination])
+        lastSource = self.transitions[0].source
+        lastDest = self.transitions[0].destination
+        while i < len(self.transitions):
+            if(len(temp)==len(self.messageTypes)):
+                self.messageTypes=temp
+                return
+            if(self.transitions[i].source==lastDest):
+                temp.append(self.messageTypes[self.transitions[i].destination])
+                lastDest = self.transitions[i].destination
+                i=0
+            if(self.transitions[i].destination==lastSource):
+                temp.insert(0, self.messageTypes[self.transitions[i].source])
+                lastSource = self.transitions[i].source
+                i=0
+            i+=1
+
+
+            
 
 machine = stateMachine()
 machine.numNodes = machine.calcNumNodes()
