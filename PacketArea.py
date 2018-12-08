@@ -45,7 +45,7 @@ class PacketArea(Gtk.Box):
 
         self.TableView = Gtk.TreeView(self.FieldAreaTable)
 
-        self.TableView.set_search_equal_func(self.getResults)
+        # self.TableView.set_search_equal_func(self.getResults)
         self.TableView.set_search_column(1)
 
         FieldAreaFrame= Gtk.Frame()
@@ -135,21 +135,8 @@ class PacketArea(Gtk.Box):
 
 
     def filterResults(self,data):
-        # print("ha" + data + " it actually works")
-        # self.TableView.set_search_entry(data)
         self.improvedSearch(data)
 
-    def getResults(self, model, column, Data, Rows):
-        row = model[Rows]
-        if Data in list(row)[column-1].lower():
-            return False
-        for inner in row.iterchildren():
-            if Data in list(inner)[column-1].lower():
-                self.TableView.expand_to_path(row.path)
-                break
-        else:
-             self.TableView.collapse_row(row.path)
-        return True
 
     def deletePacket(self):
         selectedPacket= self.TableView.get_selection()
@@ -179,11 +166,12 @@ class PacketArea(Gtk.Box):
             packetAttached = False
             for Protocol in self.PacketsDisplay[Packet]:
                 for key,value in Protocol.__dict__.items():
-                        if(re.search(str(data),str(key)) or re.search(str(data),str(value))):
-                            PacketParent = self.FieldAreaTable.append(None,[self.getFrameProtocols(self.PacketsDisplay[Packet]),0,packetNumber])
-                            self.FieldAreaTable.append(PacketParent,[Protocol.showname,int(Protocol.size),packetNumber])
-                            packetAttached = True
-                            break
+                        if(packetAttached == False):
+                            if(re.search(str(data),str(key)) or re.search(str(data),str(value))):
+                                PacketParent = self.FieldAreaTable.append(None,[self.getFrameProtocols(self.PacketsDisplay[Packet]),0,packetNumber])
+                                self.FieldAreaTable.append(PacketParent,[Protocol.showname,int(Protocol.size),packetNumber])
+                                packetAttached = True
+                                break
                         for Field in self.ProtocolsDisplay[Protocol]:
                             if(packetAttached == False):
                                 for key,value in Field.__dict__.items():
@@ -211,19 +199,6 @@ class PacketArea(Gtk.Box):
             packetNumber += 1
 
 
-    # def filterResults(self):
-        # filterToApply =
-
-    # def postPackets(self,DataList):
-    #     self.PacketsDisplay = DataList[0]
-    #     self.ProtocolsDisplay = DataList[1]
-    #     print("Posting packets..")
-    #     for ProtocolList in self.PacketsDisplay.values():
-    #         for Protocol,Fields in ProtocolList.items():
-    #             protocolParent = self.FieldAreaTable.append(None,[str(Protocol.showname),int(Protocol.size)])
-    #             for Field in Fields:
-    #                 self.FieldAreaTable.append(protocolParent,[Field.showname,int(Field.size)])
-    #     print("Packets Posted!")
 
     def on_cell_toggled(self, widget, path):
         self.FieldAreaTable[path][0] = not self.FieldAreaTable[path][0]
