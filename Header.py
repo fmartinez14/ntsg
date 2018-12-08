@@ -48,6 +48,11 @@ class Header(Gtk.Box):
         SessionWidget = ListBoxWindow()
         SessionWidget.show_all()
 
+    def StateMachine_clicked(self, widget):
+        from stateMachine import stateMachineWindow
+        window = stateMachineWindow()
+        window.show_all()
+
     def Workspace_clicked(self, widget):
         from launcherOverlay import launcherOverlayWindow
         LauncherWidget = launcherOverlayWindow()
