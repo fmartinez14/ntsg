@@ -7,6 +7,7 @@ class TagArea(Gtk.Box):
 	_fields = list()
 	_buttons = list()
 
+
 	def __init__(self):
 		Gtk.Box.__init__(self,orientation=Gtk.Orientation.VERTICAL,spacing=0)
 
@@ -16,6 +17,7 @@ class TagArea(Gtk.Box):
 		TagAreaFrame = Gtk.Frame()
 		TagAreaFrame.set_shadow_type(Gtk.ShadowType.IN)
 		self.add(TagAreaFrame)
+		self.myFilter = ""
 
 	def addField(self, label):
 		fieldBox = Gtk.Box(spacing=3)
@@ -25,15 +27,49 @@ class TagArea(Gtk.Box):
 		fieldBox.pack_end(fieldValue,False,False,0)
 		self._fields.append(fieldBox)
 
+
+	def addCombobox(self,label):
+		comboBox = Gtk.Box(spacing=0)
+		comboLabel = Gtk.Label(label)
+		comboBox.pack_start(comboLabel, False, False,0)
+
+		#Tag combobox
+		self.tag_store = Gtk.ListStore(str)
+		self.tag_store.append(["Tag 1"])
+		self.tag_store.append(["Tag 2"])
+		self.tag_store.append(["Tag 3"])
+
+		self.tag_combo = Gtk.ComboBox.new_with_model(self.tag_store)
+		self.tag_combo.connect("changed", self.on_name_combo_changed)
+		self.tag_combo.set_active(0)
+
+		renderer_text = Gtk.CellRendererText()
+		self.tag_combo.pack_start(renderer_text, True)
+		self.tag_combo.add_attribute(renderer_text, "text", 0)
+		comboBox.pack_end(self.tag_combo , False, False, 0)
+		self._fields.append(comboBox)
+
+	 #Method for combobox in PDML View
+	def on_name_combo_changed(self, combo):
+		tree_iter = combo.get_active_iter()
+		if tree_iter is not None:
+		 	model = combo.get_model()
+			self.myFilter = model[tree_iter][0]
+
+
+	def addButton(self, name):
+		newButton = Gtk.Button(label=name)
+		self._buttons.append(newButton)
+
+
+
 	def showFields(self):
 		FieldGrid = Gtk.Grid()
 		for x in range(len(self._fields)):
 			FieldGrid.attach(self._fields[x],0,(x-1),2,1)
 		self.pack_start(FieldGrid,False,False,0)
 
-	def addButton(self, name):
-		newButton = Gtk.Button(label=name)
-		self._buttons.append(newButton)
+
 
 	def showButtons(self):
 		buttonBox = Gtk.Box(spacing=10)

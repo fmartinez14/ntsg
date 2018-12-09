@@ -98,7 +98,8 @@ class LabelWindow(Gtk.Window):
 
     #Start of Tagging View
         TagBox = TagArea()
-        TagBox.addField("Saved Tag")
+	TagBox.addCombobox("Saved Tag")
+       # TagBox.addField("Saved Tag")
         TagBox.addField("Tag Name")
         TagBox.addField("Tagged Field")
         TagBox.addField("Tag Description")
