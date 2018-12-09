@@ -98,8 +98,7 @@ class LabelWindow(Gtk.Window):
 
     #Start of Tagging View
         TagBox = TagArea()
-	TagBox.addCombobox("Saved Tag")
-       # TagBox.addField("Saved Tag")
+        TagBox.addCombobox("Saved Tag")
         TagBox.addField("Tag Name")
         TagBox.addField("Tagged Field")
         TagBox.addField("Tag Description")
@@ -108,7 +107,6 @@ class LabelWindow(Gtk.Window):
         TagBox.addButton("Update")
         TagBox.addButton("Cancel")
         TagBox.showButtons()
-
 
         mainGrid.attach(TagBox,0,3,1,1)
     #End of Tagging View
