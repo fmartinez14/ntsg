@@ -6,7 +6,7 @@ class Dependency:
 	source=""
 
 	# satisfies SRS #91 & #95, creating a dependency
-	def __init__(self, newSource, newTarget, newDepType):
-		self.source=newSource
-		self.target=newTarget
+	def __init__(self, newSourceName, newTargetName, newDepType):
+		self.source=newSourceName
+		self.target=newTargetName
 		self.dependency_type=newDepType
