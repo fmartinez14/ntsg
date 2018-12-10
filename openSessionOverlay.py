@@ -4,6 +4,7 @@ from gi.repository import Gtk
 
 class openSession(Gtk.ListBoxRow):
     def __init__(self, data):
+        SessionLocation = ""
         super(Gtk.ListBoxRow, self).__init__()
         self.data = data
         self.add(Gtk.Label(data))
@@ -40,6 +41,7 @@ class openSessionwindow(Gtk.Window):
 
         openSessionBrowse = Gtk.Button("Browse")
         hbox.pack_start(openSessionBrowse, False, True, 0)
+        openSessionBrowse.connect("clicked", self.openSession)
 
         listbox.add(row)
 
@@ -48,10 +50,33 @@ class openSessionwindow(Gtk.Window):
         row.add(hbox)
         OpenButton = Gtk.Button(label="Open")
         CancelButton = Gtk.Button(label="Cancel")
+        CancelButton.connect("clicked", self.exitPrompt)
+
         hbox.pack_start(OpenButton, True, True, 0)
         hbox.pack_start(CancelButton, True, True, 0)
 
         listbox.add(row)
+
+    def exitPrompt(self, widget):
+        self.destroy()
+
+    def openSession(self, widget):
+        dialog = Gtk.FileChooserDialog("Please choose a file", self,
+            Gtk.FileChooserAction.OPEN,
+            (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+             Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
+
+        response = dialog.run()
+        if response == Gtk.ResponseType.OK:
+            print("Browse clicked")
+            print("Session File Path: " + dialog.get_filename())
+            self.SessionLocation = dialog.get_filename()
+            SessionLocation = self.SessionLocation
+            self.openSessionEntry.set_text(self.SessionLocation)
+        elif response == Gtk.ResponseType.CANCEL:
+            print("Cancel clicked")
+
+        dialog.destroy()
 
 if __name__ == '__main__':
     win = openSessionwindow()

@@ -1,6 +1,7 @@
 import gi
 gi.require_version('Gtk','3.0')
 from gi.repository import Gtk
+from Session import Session
 
 class PDMLView(Gtk.Box):
 
@@ -34,6 +35,7 @@ class PDMLView(Gtk.Box):
 
         SaveAsNewButton = Gtk.Button(label="Save as New\n  PDML State")
         PDMLButtons.pack_start(SaveAsNewButton,True,True,0)
+        SaveAsNewButton.connect("clicked", self.saveAsNew, SaveAsNewButton)
 
         SaveCurrentButton = Gtk.Button(label="Save Current\n  PDML State")
         PDMLButtons.pack_start(SaveCurrentButton,True,True,0)
@@ -162,6 +164,27 @@ class PDMLView(Gtk.Box):
     def clearPackets(self,widget):
         self.main.clearPackets()
 
+
+    def saveAsNew(self, SaveAsNewButton, NewStateName):
+        WorkSpaceBox = Session()
+        WorkSpaceBox.addState(Gtk.Entry.get_text(NewStateName))
+        print "save as new state"
+
+    def saveCurrent(self, widget):
+
+        print "save state"
+
+    def closeCurrent(self, widget):
+
+        print "close state"
+
+    def deleteCurrent(self, widget):
+
+        print "delete state"
+
+    def renameCurrent(self, widget):
+
+        print "rename"
 
 
     #End of PDML View

@@ -1,6 +1,7 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
+from Session import Session
 
 class ListBoxRowWithData(Gtk.ListBoxRow):
     def __init__(self, data):
@@ -54,11 +55,26 @@ class ListBoxWindow(Gtk.Window):
         hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing = 50)
         row.add(hbox)
         CreateButton = Gtk.Button(label="Create")
+        CreateButton.connect("clicked", self.addNewSession, sessionEntry)
+
         CancelButton = Gtk.Button(label="Cancel")
+        CancelButton.connect("clicked", self.exitPrompt)
+
         hbox.pack_start(CreateButton, True, True, 0)
         hbox.pack_start(CancelButton, True, True, 0)
 
         listbox.add(row)
+
+    def exitPrompt(self, widget):
+        self.destroy()
+
+    def addNewSession(self,CreateButton,sessionEntry):
+        SessionsBox = Session()
+        SessionsBox.addSession(Gtk.Entry.get_text(sessionEntry))
+        SessionsBox.showSessions()
+
+        print "added new session"
+        self.destroy()
 
 if __name__ == '__main__':
     win = ListBoxWindow()
