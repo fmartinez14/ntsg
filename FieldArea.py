@@ -9,7 +9,7 @@ class FieldArea(Gtk.Box):
 	def __init__(self):
 		Gtk.Box.__init__(self,orientation=Gtk.Orientation.VERTICAL,spacing=0)
 
-		TagLabel = Gtk.Label("Tag Area")
+		TagLabel = Gtk.Label("Field Area")
 		self.pack_start(TagLabel,False,False,0)
 
 		FieldAreaFrame = Gtk.Frame()
