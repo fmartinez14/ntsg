@@ -5,22 +5,21 @@ determine the number of occurrences of a specific string or character.
 """
 
 class Entropy:
-	NoOfUniqueValues = 0
-	NoOfPackets = 0
 
-	def __init__(self, data):
-		for attribute in data:
-			#setattr(object, name, value)
-			setattr(self, attribute, data[attribute])
-			# self.NoOfUniqueValues = data[0]
-			# self.NoOfPackets = data[1]
+	def __init__(self, NoOfUniqueValues, NoOfPackets):
+		self.NoOfUniqueValues = NoOfUniqueValues
+		self.NoOfPackets = NoOfPackets
 
 #start of Contract Responsibilities
-	def provideEntropy(): #contract 17
-
+	def provideEntropy(self): #contract 17
+		entVal = self.__calculateEntropy()
+		return(entVal)
 
 #start of Private Responsibilities
+	def __calculateEntropy(self):
+		return(self.NoOfUniqueValues/self.NoOfPackets)
 
-
-	def calculateEntropy(data):
-  		return NoOfUniqueValues/NoOfPackets
+#testing my code
+#entropy=Entropy(10,3)
+#entVal1=entropy.provideEntropy()
+#print(entVal1)
