@@ -3,7 +3,7 @@ Class Name: Tag
 Description: A way for the analyst to notate certain field for later review
 """
 
-import provideFieldAttributes from Field
+#import provideFieldAttributes from Field
 
 class Tag:
 	TagName = ""
@@ -17,7 +17,7 @@ class Tag:
 		# self.TagAnnotation = data[2]
 
 # start of Contract Responsibilities
-	def provideTag(): #contract 18
+	#def provideTag(): #contract 18
 
 
 #start of Private Responsibilities

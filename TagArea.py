@@ -6,6 +6,8 @@ class TagArea(Gtk.Box):
 
 	_fields = list()
 	_buttons = list()
+	_tagFields = list()
+	_tagDic = dict()
 
 
 	def __init__(self):
@@ -19,7 +21,17 @@ class TagArea(Gtk.Box):
 		self.add(TagAreaFrame)
 		self.myFilter = ""
 
+		with open("tags.txt") as file:
+			for line in file:
+				line = line.strip("\n")
+				self._tagFields.append(line)
+
+		#self.populateFields()
+
 	def addField(self, label):
+		# add the field key and value into the dictionay
+		self._tagDic[label] = "testing"
+
 		fieldBox = Gtk.Box(spacing=3)
 		fieldTitle = Gtk.Label(label)
 		fieldBox.pack_start(fieldTitle,False,False,0)
@@ -35,9 +47,8 @@ class TagArea(Gtk.Box):
 
 		#Tag combobox
 		self.tag_store = Gtk.ListStore(str)
-		self.tag_store.append(["Tag 1"])
-		self.tag_store.append(["Tag 2"])
-		self.tag_store.append(["Tag 3"])
+		for f in self._tagFields:
+			self.tag_store.append([f])
 
 		self.tag_combo = Gtk.ComboBox.new_with_model(self.tag_store)
 		self.tag_combo.connect("changed", self.on_name_combo_changed)
@@ -76,3 +87,9 @@ class TagArea(Gtk.Box):
 		for x in range(len(self._buttons)):
 			buttonBox.pack_start(self._buttons[x],False,False,0)
 		self.pack_end(buttonBox,False,False,36)
+
+	def populateFields(self):
+		print (self._fields[0].Entry)
+		for key in self._tagDic:
+			print (key + ":" + self._tagDic[key])
+
