@@ -1,6 +1,7 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
+from Tag import Tag
 
 class openPCAP(Gtk.ListBoxRow):
     def __init__(self, data):
@@ -9,7 +10,7 @@ class openPCAP(Gtk.ListBoxRow):
         self.add(Gtk.Label(data))
 
 class openPCAPwindow(Gtk.Window):
-
+    tag = {}
     def __init__(self):
         Gtk.Window.__init__(self, title="Tag")
         self.set_border_width(10)
@@ -34,9 +35,9 @@ class openPCAPwindow(Gtk.Window):
         tagLabel = Gtk.Label("Tag Name   ", xalign=0)
         vbox.pack_start(tagLabel, False, True, 0)
 
-        tagEntry = Gtk.Entry()
-        tagEntry.props.valign = Gtk.Align.CENTER
-        hbox.pack_start(tagEntry, True, True, 0)
+        self.tagEntry = Gtk.Entry()
+        self.tagEntry.props.valign = Gtk.Align.CENTER
+        hbox.pack_start(self.tagEntry, True, True, 0)
 
         listbox.add(row)
 
@@ -44,9 +45,9 @@ class openPCAPwindow(Gtk.Window):
         hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=50)
         row.add(hbox)
         tagFieldlabel = Gtk.Label("Tag Field      ", xalign=0)
-        tagFieldEntry = Gtk.Entry()
+        self.tagFieldEntry = Gtk.Entry()
         hbox.pack_start(tagFieldlabel, False, True, 0)
-        hbox.pack_start(tagFieldEntry, True, True, 0)
+        hbox.pack_start(self.tagFieldEntry, True, True, 0)
 
         listbox.add(row)
 
@@ -54,9 +55,9 @@ class openPCAPwindow(Gtk.Window):
         hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=50)
         row.add(hbox)
         tagDescriptionlabel = Gtk.Label("Description", xalign=0)
-        tagDescriptionEntry = Gtk.Entry()
+        self.tagDescriptionEntry = Gtk.Entry()
         hbox.pack_start(tagDescriptionlabel, False, True, 0)
-        hbox.pack_start(tagDescriptionEntry, True, True, 0)
+        hbox.pack_start(self.tagDescriptionEntry, True, True, 0)
 
         listbox.add(row)
 
@@ -64,14 +65,29 @@ class openPCAPwindow(Gtk.Window):
         hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing = 50)
         row.add(hbox)
         SaveButton = Gtk.Button(label="Save")
+        SaveButton.connect( "clicked", self.on_saveButton_click )
         CancelButton = Gtk.Button(label="Cancel")
+        CancelButton.connect("clicked",self.on_exit_clicked)
         hbox.pack_start(SaveButton, True, True, 0)
         hbox.pack_start(CancelButton, True, True, 0)
-
         listbox.add(row)
 
+    def on_saveButton_click(self, widget):
+        tagName = self.tagEntry.get_text()
+        tagField = self.tagFieldEntry.get_text()
+        tagDescription = self.tagDescriptionEntry.get_text()
 
-win = openPCAPwindow()
-win.connect("destroy", Gtk.main_quit)
-win.show_all()
-Gtk.main()
+        myTag=Tag(tagName, tagField, tagDescription)
+        print ("this is  my tag: ",myTag.TagName, myTag.TaggedField, myTag.TagAnnotation)
+        myTag.saveTag(tagName, tagField, tagDescription)
+        
+        self.destroy()
+    #def saveTag()
+    def on_exit_clicked(self,widget):
+        self.destroy()
+
+if __name__ == '__main__':
+    win = openPCAPwindow()
+    win.connect("destroy", Gtk.main_quit)
+    win.show_all()
+    Gtk.main()

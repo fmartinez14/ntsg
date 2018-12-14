@@ -102,6 +102,7 @@ class LabelWindow(Gtk.Window):
         TagBox.addField("Tag Name")
         TagBox.addField("Tagged Field")
         TagBox.addField("Tag Description")
+        TagBox.populateFields()
         TagBox.showFields()
 
         TagBox.addButton("Update")
@@ -115,7 +116,7 @@ class LabelWindow(Gtk.Window):
         FieldAreaBox = FieldArea()
         mainGrid.attach(FieldAreaBox,1,3,1,1)
 
-        # FieldAreaBox.addField("icmp.type","Type 8 [Echo ping request]" , 1, 34, "8", "8", 2)
+        FieldAreaBox.addField("icmp.type","Type 8 [Echo ping request]" , 1, 34, "8", "8", 2)
 
 
     #Start of Message Type View

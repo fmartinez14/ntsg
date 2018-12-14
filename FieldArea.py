@@ -1,6 +1,7 @@
 import gi
 gi.require_version('Gtk','3.0')
-from gi.repository import Gtk
+from gi.repository import Gtk, GLib, Gio
+
 
 class FieldArea(Gtk.Box):
 
@@ -9,7 +10,7 @@ class FieldArea(Gtk.Box):
 	def __init__(self):
 		Gtk.Box.__init__(self,orientation=Gtk.Orientation.VERTICAL,spacing=0)
 
-		TagLabel = Gtk.Label("Tag Area")
+		TagLabel = Gtk.Label("Field Area")
 		self.pack_start(TagLabel,False,False,0)
 
 		FieldAreaFrame = Gtk.Frame()
@@ -26,7 +27,7 @@ class FieldArea(Gtk.Box):
 
 		#Creating the ListStore model
 		self.data_liststore = Gtk.ListStore(str, str, int, int, str, str, int)
-		
+
 		self.current_filter_language = None
 
 		#Creating the filter, feeding it with the liststore model
@@ -37,11 +38,24 @@ class FieldArea(Gtk.Box):
 		#Creating the treeview, making it use the filter as a model, and adding the columns
 		self.treeview = Gtk.TreeView.new_with_model(self.language_filter)
 
+		self.treeview.set_activate_on_single_click(True)
+		#self.treeview.row_activated(Gtk.TreePath(), Gtk.TreeViewColumn(None))
+		#self.treeview.set_cursor(Gtk.TreePath(row))
+
+		#def NewSession_clicked(self, widget):
+        #from newSessionsOverlay import ListBoxWindow
+        #SessionWidget = ListBoxWindow()
+        #SessionWidget.show_all()
+
 		for i, column_title in enumerate(["Field Name", "Showname", "Size", "Position", "Value", "Entropy"]):
 			renderer = Gtk.CellRendererText()
 			column = Gtk.TreeViewColumn(column_title, renderer, text=i)
 			column.set_resizable(True)
 			self.treeview.append_column(column)
+
+		self.treeview.connect("button_press_event", self.mouse_click)#****added this****
+
+
 
 		#Creating buttons to filter by programming lang, and setting up their events
 		# self.buttons = list()
@@ -67,6 +81,18 @@ class FieldArea(Gtk.Box):
 		# 	self.grid.attach_next_to(button, self.buttons[i], Gtk.PositionType.RIGHT, 1, 1)
 
 		self.show_all()
+	def mouse_click(self, tv, event):
+		from tagOverlay import openPCAPwindow
+		if event.button ==3:
+			self.pthinfo = self.treeview.get_path_at_pos(event.x, event.y)
+			if self.pthinfo != None:
+				path,col,cellx,celly = self.pthinfo
+				self.tree.grab_focus()
+				self.tree.set_cursor(path,col,0)
+		tagWindow = openPCAPwindow()
+		tagWindow.show_all()
+
+		print("you click me")
 
 	def updateModel(self):
 		for data_ref in self.data_list:
@@ -98,7 +124,7 @@ class FieldArea(Gtk.Box):
 		if fieldToChange == "Field Name":
 			x = 0
 		elif fieldToChange == "Showname":
-			x == 1
+			x = 1
 		elif fieldToChange == "Value":
 			x = 5
 		elif fieldToChange == "Size":
