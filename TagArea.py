@@ -89,7 +89,7 @@ class TagArea(Gtk.Box):
 		self.pack_end(buttonBox,False,False,36)
 
 	def populateFields(self):
-		print (self._fields[0].Entry)
+		#print (self._fields[0])
 		for key in self._tagDic:
 			print (key + ":" + self._tagDic[key])
 

@@ -9,7 +9,7 @@ class openPCAP(Gtk.ListBoxRow):
         self.data = data
         self.add(Gtk.Label(data))
 
-class openPCAPwindow(Gtk.Window):
+class openTagOverlaywindow(Gtk.Window):
     tag = {}
     def __init__(self):
         Gtk.Window.__init__(self, title="Tag")
@@ -87,7 +87,7 @@ class openPCAPwindow(Gtk.Window):
         self.destroy()
 
 if __name__ == '__main__':
-    win = openPCAPwindow()
+    win = openTagOverlaywindow()
     win.connect("destroy", Gtk.main_quit)
     win.show_all()
     Gtk.main()

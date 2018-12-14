@@ -82,14 +82,14 @@ class FieldArea(Gtk.Box):
 
 		self.show_all()
 	def mouse_click(self, tv, event):
-		from tagOverlay import openPCAPwindow
+		from tagOverlay import openTagOverlaywindow
 		if event.button ==3:
 			self.pthinfo = self.treeview.get_path_at_pos(event.x, event.y)
 			if self.pthinfo != None:
 				path,col,cellx,celly = self.pthinfo
 				self.tree.grab_focus()
 				self.tree.set_cursor(path,col,0)
-		tagWindow = openPCAPwindow()
+		tagWindow = openTagOverlaywindow()
 		tagWindow.show_all()
 
 		print("you click me")
